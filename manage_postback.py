@@ -3,6 +3,7 @@ from db_connection import *
 from postback import *
 from handle_waitlist import *
 from datetime import datetime, timedelta
+from constant import *
 
 
 state_postback = { #Quyết định ở state đó chỉ được gọi những postback nào, tránh rối hệ thống

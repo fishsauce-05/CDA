@@ -10,14 +10,12 @@ from user import User
 from postback import *
 from manage_postback import handle_postback
 from handle_waitlist import *
-
+from constant import *
 
 # Load biến môi trường từ file .env
 app = Flask(__name__, static_folder="assets")
 
 VERIFY_TOKEN = "CDA"
-ACCESS_TOKEN = "EAAMKvcenz40BOZCNZA5TaYwfcyrd403LZAiE0xEiIRyGChu3WkFaX54u75sghT6wZB7eRseqpT2h4VwMYKyQOm4oziZBttKZAYOWlspfxNf0MzfkfhLYnPFhz78Bss3R1DXNDxweMEnvmFL0INlTnYqlVZCDY6GNmkIZA98Ao6g0sY38eYpZC2rnNjkFqnTU5rXbq"
-url = f"https://graph.facebook.com/v17.0/103354986151989/messages?access_token={ACCESS_TOKEN}"
 menu_url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
 
 
@@ -28,7 +26,7 @@ users = get_all_users()
 
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
-
+    logging.info("------------------ trigger webhook")
     if request.method == 'GET':
         # Lấy thông tin từ query parameters
         mode = request.args.get('hub.mode')
@@ -45,7 +43,7 @@ def webhook():
 
     if request.method == 'POST':
         data = request.get_json()
-        print("Received data:", data)
+        logging.info("Received data:", data)
 
         # Kiểm tra dữ liệu nếu là tin nhắn và lấy thông tin người gửi và nội dung tin nhắn
         if "entry" in data:
@@ -178,6 +176,7 @@ def setup_get_started_button():
 
 if __name__ == "__main__":
     setup_get_started_button()
+    # postback_welcome()
     delete_persistent_menu()
     setup_persistent_menu()
     app.run(debug=False, port=5005)

@@ -3,9 +3,7 @@ import requests
 import json
 from db_connection import *
 from handle_waitlist import *
-
-ACCESS_TOKEN = "EAAMKvcenz40BOZCNZA5TaYwfcyrd403LZAiE0xEiIRyGChu3WkFaX54u75sghT6wZB7eRseqpT2h4VwMYKyQOm4oziZBttKZAYOWlspfxNf0MzfkfhLYnPFhz78Bss3R1DXNDxweMEnvmFL0INlTnYqlVZCDY6GNmkIZA98Ao6g0sY38eYpZC2rnNjkFqnTU5rXbq"
-url = f"https://graph.facebook.com/v17.0/351769248871162/messages?access_token={ACCESS_TOKEN}"
+from constant import *
 
 headers = {"Content-Type": "application/json"}
 def out(payload):

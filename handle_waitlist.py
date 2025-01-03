@@ -1,9 +1,10 @@
 from db_connection import *
 from user import User
 from datetime import datetime
-
+from constant import *
 
 wait_list = db_get_all_SEARCH()
+print(wait_list)
 
 match_case = {
 "MALE - FEMALE": ["FEMALE - MALE", "FEMALE - BI"],
@@ -26,7 +27,7 @@ def check_match(user, partner):
     # user_kink = "MALE" + " - " + "FEMALE"
     # partner_kink = "FEMALE" + " - " + "FEMALE"
 
-    if(partner_kink in match_case.get((user_kink))):
+    if(partner_kink in match_case.get(user_kink)):
         return True
     return False
 
