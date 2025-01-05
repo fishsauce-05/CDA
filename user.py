@@ -1,6 +1,6 @@
 from datetime import datetime
 class User():
-    def __init__(self,id,state,partner_id = "", nickname = "", gender = "", partner_gender = "", introduce = "", last_action_time ="", previous_id = "", blocks_id = ""):
+    def __init__(self, id="", state="" ,partner_id = "", nickname = "", gender = "", partner_gender = "", introduce = "", last_action_time ="", previous_id = "", blocks_id = ""):
         self.id = id
         self.state = state
         self.partner_id = partner_id
@@ -20,4 +20,3 @@ class User():
 
     def add_block(self, block_id):
         self.blocks_id = self.blocks_id.append(block_id)
-

@@ -6,22 +6,23 @@ from datetime import datetime, timedelta
 from constant import *
 
 
-state_postback = { #Quyết định ở state đó chỉ được gọi những postback nào, tránh rối hệ thống
-'WELCOME':          ['#WELCOME','#START', 'MENU_INTRODUCTION', 'MENU_GUIDE', 'MENU_VIEW_QUEUE','#END'], #START co 2 luong xu ly: 1 la SET_GENDER, 2 la SETTING
-'SETTING':          ['#CHANGE', '#SEARCH', '#NEXT', '#WELCOME','#END'],
-'SET_GENDER':       ['#ME_MALE', '#ME_FEMALE', '#ME_BI','#END'],
-'PARTNER_GENDER':   ['#YOU_MALE', '#YOU_FEMALE', '#YOU_BI', '#CONFIRM_INFO','#END'],
-'SEARCH':           ['#SEARCH', '#STOP_SEARCH','#END'],
-'MATCH':            ['#AGREE', '#DISAGREE'], #Tạm thời bỏ
-'AGREED':           [], #Tạm thời bỏ
-'REFUSED':          [], #Tạm thời bỏ
-'TALK':             ['#KEEP','#CONFIRM_END', '#END'],
-'END':              ['#WELCOME', '#START', '#FEEDBACK', '#AGAIN','#END'],
+state_postback = { #MU vo dich nhe anh em
+    'WELCOME':          ['#WELCOME', '#START', 'MENU_INTRODUCTION', 'MENU_GUIDE', 'MENU_VIEW_QUEUE', '#RETRY', '#END'],
+    'SETTING':          ['#CHANGE', '#SEARCH', '#NEXT', '#RETRY', '#WELCOME', '#END'],
+    'SET_GENDER':       ['#ME_MALE', '#ME_FEMALE', '#ME_BI', '#RETRY', '#END'],
+    'PARTNER_GENDER':   ['#YOU_MALE', '#YOU_FEMALE', '#YOU_BI', '#CONFIRM_INFO', '#RETRY', '#END'],
+    'SEARCH':           ['#SEARCH', '#STOP_SEARCH', '#RETRY', '#END'],
+    'MATCH':            ['#AGREE', '#DISAGREE'],  # Tạm thời bỏ
+    'AGREED':           [],  # Tạm thời bỏ
+    'REFUSED':          [],  # Tạm thời bỏ
+    'TALK':             ['#KEEP', '#CONFIRM_END', '#RETRY', '#END'],
+    'END':              ['#WELCOME', '#START', '#FEEDBACK', '#AGAIN', '#RETRY', '#END'],
 }
 
 
-def handle_postback(user, payload, users):
 
+def handle_postback(user, payload, users):
+    """Xử lý các hành động postback."""
     if payload.startswith('#'):
         if payload in state_postback.get(user.state):
             return_postback(user, payload, users)
@@ -36,13 +37,15 @@ def handle_postback(user, payload, users):
         return_postback(user, payload, users)
 
 
+
 def return_postback(user, payload, users):
     if payload.startswith('#'):
         match payload:
             case '#WELCOME':
                 user.state = 'WELCOME'
                 postback_welcome(user) #vào welcome
-
+            case '#RETRY':
+                postback_retry(user)
             case '#START':
                 if (user.gender != "") & (user.partner_gender != ""):
                     user.state = 'SETTING'
@@ -230,6 +233,6 @@ def return_postback(user, payload, users):
             case 'MENU_CHANGE_INFO':
                 postback_change_info(user) #gõ /nickname để đổi biệt danh, /gioithieu để đổi giới thiệu về bạn, /gioitinh Nam, Nu, Bi để đổi giới tính, /gu Nam, Nu, Bi để đổi gu
             case 'SUGGEST':
-                postback_suggest(user) #gợi ý những câu mở đầu
+                postback_suggest(user) #gNoợi ý những câu mở đầu
             case 'NOTHING':
                 postback_still_chat(user)

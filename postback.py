@@ -16,6 +16,12 @@ def out(payload):
 
 #Bắt đầu sửa từ đây
 def postback_welcome(user): #Template hiện ra lúc chào đón
+    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
+        text = '''Xin chào bạn đến với sự kiện Crush in Ptit
+Sự kiện để cho bạn tìm kiếm có cơ hội tìm tình yêu trong đời mk
+H trước tiên, bạn hãy ấn váo nút 3 gạch ngang ở bên tay phải thanh nhắn tin
+Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
+'''
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -26,7 +32,7 @@ def postback_welcome(user): #Template hiện ra lúc chào đón
                     "elements": [
                         { #Cục đầu tiên
                             "title": "CHAT ẨN DANH NÀO!",
-                            "image_url": "https://cdn.tuoitre.vn/thumb_w/480/471584752817336320/2023/3/5/cau-do-2-16779929961011467051251.jpg",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": "https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-6/375596172_876783230787846_2912688737487120703_n.png?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGnmMGldbXLaqbYyCTKWw_TfBMnLcq6ceR8Eyctyrpx5FfLuPf1Qy6UjaEhe3z71SaXpR4mnzcjBqM9OyL7w3vb&_nc_ohc=MWH29r0qwwoQ7kNvgFWWpGv&_nc_zt=23&_nc_ht=scontent.fhan5-9.fna&_nc_gid=AFjUetjTLuB8729BhuhF1mg&oh=00_AYDyYbWplN_Mm6Efk3h98lHN5CG8DFAoeWSCS3_NI1mtoQ&oe=677F4BED",  # Thay thế bằng URL hình ảnh bạn muốn,
                             "buttons": [
                                 {
                                     "type": "postback",
@@ -47,7 +53,7 @@ def postback_welcome(user): #Template hiện ra lúc chào đón
                         },
                         { #Cục thứ 2
                             "title": "ĐANG CÓ GÌ DIỄN RA VẬY?",
-                            "image_url": "https://cdn.tuoitre.vn/thumb_w/480/471584752817336320/2023/3/5/cau-do-1-16779929960982066590826.jpg",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": "https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/366683630_144682238678402_7554415388400685595_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHqu4RPoy__AHrnLR4zSs-jsxe4Ibj_YGWzF7ghuP9gZT2ujoYig1dOVKbysTzAjFF0tikNzRg2KYfKWdMwebLM&_nc_ohc=xK7K1Orii7wQ7kNvgFYHCQ-&_nc_zt=23&_nc_ht=scontent.fhan5-11.fna&_nc_gid=AG4J78jvFXawC_d58gFyLEo&oh=00_AYC66JN2HGV26-i9Gr0CTnAAPB-Qfv4ATgVsixr8SBtLow&oe=677F59C2", # Thay thế bằng URL hình ảnh bạn muốn,
                             "buttons": [
                                 {
                                     "type": "web_url",
@@ -91,91 +97,199 @@ def postback_welcome(user): #Template hiện ra lúc chào đón
     out(payload)
 
 def postback_first_come(user):
-    payload = {
-        "recipient": {"id": user.id},
-        "message": {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "button",
-                    "text": f'''Bạn chưa có thông tin. Chúng ta cùng nhau thêm thông tin nhé!
-Nickname mặc định là: {user.nickname}
-Giới thiệu mặc định là: {user.introduce}
-Giới thiệu ngắn gọn và gợi chủ đề giúp các bạn không bị bí ý tưởng, dễ bắt chuyện mở lời hơn
+    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
+        text = f'''Bạn chưa nhập đủ thông tin. Vui lòng thêm thông tin để tiếp tục:
+Nickname hiện tại: {user.nickname if user.nickname else 'Chưa nhập'}
+Giới thiệu hiện tại: {user.introduce if user.introduce else 'Chưa nhập'}
 
 Để thay đổi, gõ /nickname và /gioithieu
 Ví dụ:
 /nickname vì_tinh_tú_97
 /gioithieu Cậu có phải là đom đóm không? Tớ thích đom đóm lắm nè
-
-Mỗi tin nhắn chỉ đọc được 1 lệnh duy nhất, đừng viết liền lệnh trong 1 tin nhắn
-''',
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "TIẾP",
-                            "payload": "#NEXT"
-                        }
-                    ]
+        '''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "NHẬP THÔNG TIN",
+                                "payload": "#RETRY"
+                            }
+                        ]
+                    }
                 }
             }
         }
-    }
+    else:
+        text = f'''Nickname hiện tại: {user.nickname}
+Giới thiệu hiện tại: {user.introduce}
+
+Bạn đã sẵn sàng tiếp tục!
+        '''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "TIẾP",
+                                "payload": "#NEXT"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
     out(payload)
+
 
 def postback_remind_nickname(user):
-    payload = {
-        "recipient": {"id": user.id},
-        "message": {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "button",
-                    "text":'''Đừng quên câu lệnh
+    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
+        text = '''Bạn chưa nhập đủ thông tin cần thiết.
+Vui lòng nhập:
 /nickname để đổi biệt danh
-Ví dụ:
-/nickname mai_khanhh
+Ví dụ: /nickname mai_khanhh
 
-/gioithieu để đổi giới thiệu ngắn về mình nhé!
+/gioithieu để giới thiệu ngắn về mình
 Ví dụ:
 /gioithieu cần người gấp màn hộ, nhiều muỗi mà bung màn ra không bít gấp 🥺
-''',
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "TIẾP",
-                            "payload": "#NEXT"
-                        }
-                    ]
+'''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "NHẬP THÔNG TIN",
+                                "payload": "#RETRY"
+                            }
+                        ]
+                    }
                 }
             }
         }
-    }
+    else:
+        text = '''Đừng quên các câu lệnh:
+/nickname để đổi biệt danh
+/gioithieu để giới thiệu ngắn về mình nhé!
+'''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "TIẾP",
+                                "payload": "#NEXT"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
     out(payload)
 
-def postback_setting(user): #Hiện ra khi người dùng bấm vào (BẮT ĐẦU: payload = #START)
-    gender, partner = 'A', 'B'
-    match user.gender:
-        case 'MALE':
-            gender = 'Nam'
-        case 'FEMALE':
-            gender = 'Nữ'
-        case 'BI':
-            gender = 'Bí mật'
-    match user.partner_gender:
-        case 'MALE':
-            partner = 'Nam'
-        case 'FEMALE':
-            partner = 'Nữ'
-        case 'BI':
-            partner = 'Nhạc nào cũng nhảy'
 
-    text = f'''Nickname của bạn: {user.nickname}
+def postback_setting(user):
+    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
+        text = '''Bạn chưa nhập đủ thông tin. Vui lòng nhập thông tin trước khi tiếp tục.
+Câu lệnh:
+/nickname để đổi biệt danh
+/gioithieu để giới thiệu ngắn về mình
+'''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "NHẬP THÔNG TIN",
+                                "payload": "#RETRY"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    else:
+        gender, partner = 'A', 'B'
+        match user.gender:
+            case 'MALE':
+                gender = 'Nam'
+            case 'FEMALE':
+                gender = 'Nữ'
+            case 'BI':
+                gender = 'Bí mật'
+        match user.partner_gender:
+            case 'MALE':
+                partner = 'Nam'
+            case 'FEMALE':
+                partner = 'Nữ'
+            case 'BI':
+                partner = 'Nhạc nào cũng nhảy'
+
+        text = f'''Nickname của bạn: {user.nickname}
 Giới tính bạn chọn: {gender}
 Gu bạn chọn: {partner}
 Giới thiệu ngắn gọn: '{user.introduce}'
 Bạn có muốn thay đổi hay tìm kiếm luôn?
-    '''
+        '''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "TÌM KIẾM LUÔN!",
+                                "payload": "#SEARCH"
+                            },
+                            {
+                                "type": "postback",
+                                "title": "ĐỔI THÔNG TIN",
+                                "payload": "#CHANGE"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    out(payload)
+
+
+def postback_setgender(user):
+    """Hiển thị bước chọn giới tính."""
+    text = "Hãy chọn giới tính của bạn:"
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -183,19 +297,11 @@ Bạn có muốn thay đổi hay tìm kiếm luôn?
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text":text,
+                    "text": text,
                     "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "TÌM KIẾM LUÔN!",
-                            "payload": "#SEARCH"
-                        },
-                        {
-                            "type": "postback",
-                            "title": "ĐỔI THÔNG TIN",
-                            "payload": "#CHANGE"
-                        }
-
+                        {"type": "postback", "title": "Nam", "payload": "#ME_MALE"},
+                        {"type": "postback", "title": "Nữ", "payload": "#ME_FEMALE"},
+                        {"type": "postback", "title": "Bí mật", "payload": "#ME_BI"}
                     ]
                 }
             }
@@ -203,38 +309,6 @@ Bạn có muốn thay đổi hay tìm kiếm luôn?
     }
     out(payload)
 
-
-def postback_setgender(user): #Hiện ra để người dùng chọn giới tính
-    payload = {
-        "recipient": {"id": user.id},
-        "message": {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "button",
-                    "text":"Chọn giới tính của bạn",
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Nam",
-                            "payload": "#ME_MALE"
-                        },
-                        {
-                            "type": "postback",
-                            "title": "Nữ",
-                            "payload": "#ME_FEMALE"
-                        },
-                        {
-                            "type": "postback",
-                            "title": "Bí mật",
-                            "payload": "#ME_BI"
-                        },
-                    ]
-                }
-            }
-        }
-    }
-    out(payload)
 
 def  postback_partnergender(user): #Hiện ra để người dùng chọn gu của mình
     payload = {
@@ -291,15 +365,30 @@ def postback_search(user): #Thông báo bắt đầu tìm kiếm
     }
     out(payload)
 
-def postback_found(user, partner, wait_time): #Thông báo là đã tìm thấy đối tượng phù hợp, bắt đầu chat
-    #nhớ hiện cảnh báo cho user là partner đã đợi được bao lâu và nếu họ không phản hồi thì nên tìm người khác
-    text_user = f'''BOTBOT đã tìm thấy!
+def postback_found(user, partner, wait_time):
+    #Code ne
+    diff = datetime.now() - partner.last_action_time if partner.last_action_time else timedelta(seconds=0)
+    wait_seconds = diff.total_seconds()  #Thay time
+
+    #dk
+    if wait_seconds < 60:
+        text_user = f'''BOTBOT đã tìm thấy!
+Bạn đã được mai mối với: {partner.nickname}
+1 xíu về họ: {partner.introduce}
+
+{partner.nickname} chỉ mới chờ {wait_time}, duyên số tìm đến 2 bạn trước khi cupid kịp giương cung rồi đó!
+Hãy cùng bắt đầu cuộc trò chuyện ngay nào!
+        '''
+    else:
+        text_user = f'''BOTBOT đã tìm thấy!
 Bạn đã được mai mối với: {partner.nickname}
 1 xíu về họ: {partner.introduce}
 
 {partner.nickname} đã đợi bạn {wait_time} nên có thể họ đang chưa để ý tin nhắn. Gặp nhau là duyên số, hãy kiên nhẫn chút nhé!
 Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có thể /end và tìm lại.
         '''
+
+    # Send the message to the user
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -307,7 +396,7 @@ Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có th�
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text":text_user,
+                    "text": text_user,
                     "buttons": [
                         {
                             "type": "postback",
@@ -319,7 +408,6 @@ Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có th�
                             "title": "GỢI Ý MỞ LỜI",
                             "payload": "SUGGEST"
                         }
-
                     ]
                 }
             }
@@ -327,6 +415,7 @@ Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có th�
     }
     out(payload)
 
+    # Construct message for partner
     text_partner = f'''Đã tìm thấy!
 Sau {wait_time}, chúng tôi đã tìm được người phù hợp cho bạn, hehe
 
@@ -342,20 +431,20 @@ Chúc bạn ngon miệng!
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text":text_partner,
+                    "text": text_partner,
                     "buttons": [
                         {
                             "type": "postback",
                             "title": "GỢI Ý MỞ LỜI",
                             "payload": "SUGGEST"
                         }
-
                     ]
                 }
             }
         }
     }
     out(payload)
+
 
 def postback_feedback(user): #Yêu cầu người dùng feedback về cuộc trò chuyện vừa rồi
     payload= {}
@@ -477,18 +566,16 @@ def postback_end(user):
 def postback_guide(user):
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": '''Dễ vãilồn đếo cần hướng dẫn ai cũng biết
-1. Mày chọn giới tính, Nam hoặc Nữ hoặc Buêđuê (không chia Bột tôm với Tóp Mỡ)
-2. Mày chọn gu mày, Nam hoặc Nữ hoặc Có lỗ là được
-3. Tìm kiếm, hợp thì hệ thống nó tự ghép
-4. Muốn đổi nickname hoặc about me cho nó ngầu thì dùng:
-/nickname hoặc /gioithieu
-5. Ngu văn thì ấn vào cái "Gợi ý mở lời" để tao tán hộ cho
-6. Tán nhau văn minh lịch sự, bình thường admin không đọc được đâu nhưng gõ /report nó tải tin nhắn về bọn tao đọc được, ban chết cụ mày
-7. Không biết nhắn gì nữa thì gõ /end hoặc ấn cái nút ❌KẾT THÚC ở MENU để đổi đào
+        "message": {"text": '''Đơn giản thôi không có gì khó khăn với bạn đâu
+1. Đầu tiên, bạn hãy lựa chọn giới tính của bản thân(giới tính mà tâm hồn bạn đang mang)
+2. Tiếp theo, bạn hãy chọn gu giới tính người bạn muốn làm quen
+3. Sau đó, bạn ấn tìm kiếm để chúng tôi có thể giúp bạn gặp được người phù hợp với mong muốn của bạn
+4. Nếu bạn muốn đổi nickname hoặc giới thiệu bản thân thì hãy dùng:
+/nickname hoặc /gioithieu  nhé !
+5. Nếu không biết phải mở lời với đối phương như nào hay trong tình trạng hết văn thì hãy ấn vào "Gợi ý mở lời", chúng tôi sẽ giúp đỡ bạn một phần nào đấy để các bạn có thể dễ dàng tiếp cận nhau hơn :3
+6. Nếu cảm thấy đối phương không phù hợp với bản thân và muốn kết thúc cuộc trò chuyện thì hãy gõ /end hoặc ấn cái nút ❌KẾT THÚC ở MENU  để  kết thúc ccâu chuyện với người đó và có thể tiếp tục tìm kiếm những người phù hợp với mong muốn  của bạn
 
-Muốn biết có những lệnh gì thì ấn /lenh mà đọc
-Thi thoảng có mấy câu lệnh hay hay như kiểu /vinhdanh hoặc /thongke thì gõ vào mà nghịch, bọn tao giấu bitcoin trong đấy
+Hãy gõ /lenh để hiển thị tất cả những câu lệnh bạn có thể sử dụng
 '''},
         "messaging_type": "RESPONSE"
     }
@@ -498,11 +585,36 @@ def postback_introduction(user): #Giới thiệu về ứng dụng
     payload= {}
     out(payload)
 
+def initiate_reply(user, message_id):
+    """Yêu cầu người dùng nhập nội dung phản hồi."""
+    user.temp_message_id = message_id  # Lưu ID tin nhắn tạm thời
+    update_temp_message_id(user.id, message_id)  # Lưu vào database (nếu cần)
+    send_message(user.id, "Vui lòng nhập nội dung phản hồi của bạn:")
+
+
+
 def postback_view_queue(user): #Xem hàng đợi, toàn là code SQL, nên để anh viết
-    count_male = sum(1 for x in wait_list if x.gender == "MALE") + 3
-    count_female = sum(1 for x in wait_list if x.gender == "FEMALE") + 5
-    count_bi = sum(1 for x in wait_list if x.gender == "BI") + 7
-    count_suit = sum(1 for x in wait_list if check_match(user, x) & (user.id != x.id))
+    print("Wait list after global ", wait_list)
+    count_male = 0
+    for x in wait_list:
+        if (x.gender == "MALE"):
+            count_male += 1
+    count_male += 3
+    count_female = 0
+    for x in wait_list:
+        if x.gender == "FEMALE":
+            count_female += 1
+    count_female += 5
+    count_bi = 0
+    for x in wait_list:
+        if x.gender == "BI":
+            count_bi += 1
+    count_bi += 7
+    count_suit = 0
+    for x in wait_list:
+        if (check_match(user, x)) and (user.id != x.id) :
+            count_suit += 1
+    count_suit += 3
     payload = {
         "recipient": {"id": user.id},
         "message": {"text": f'''Hiện đang có:
@@ -511,7 +623,6 @@ def postback_view_queue(user): #Xem hàng đợi, toàn là code SQL, nên để
 {count_bi} Bí mật trong hàng chờ
 
 {count_suit} người phù hợp gu của bạn
-Để biết thêm những thông tin thú vị khác, hãy gõ /thongke
 '''},
         "messaging_type": "RESPONSE"
     }
@@ -528,17 +639,69 @@ def postback_change_info(user): #Nằm ở menu khi người dùng muốn đổi
 def postback_suggest(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "Hay là mình cứ bất chấp hết yêu nhau đi anh...\nSau các em tự thêm nội dung vào đây, làm thành nhiều cái nút để họ bấm rồi gửi câu văn đi cũng được"},
+        "message": {"text": "Chào bạn, bạn ăn cơm chưa \n Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ ? Nếu không thì cho mình thử nhé :3 \n Trời lạnh như này mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong \n Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian của cuộc đời không, vậy nên hãy đền bù bằng cách trò chuyện với tớ hôm nay đi \n Cậu ơi mình đang làm một bài khảo sát : Cậu thích uống trà sữa với đường hay với tớ hơn vậy \n Nay xem tarot người ta bảo tớ nhắn tin với định mệnh mà tình cờ thế nào nay tớ lại nhắn với mỗi cậu nhỉ "},
         "messaging_type": "RESPONSE"
     }
     out(payload)
 def postback_still_chat(user):
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "Lì ghê ha, redflag 🚩 vậy mà vẫn đâm đầu\n Ngu như chó"},
+        "message": {"text": "Hãy từ từ để ta có thể tìm hiểu rõ về nhau hơn nhé \n "},
         "messaging_type": "RESPONSE"
     }
     out(payload)
+
+#Postback retry
+
+def postback_retry(user):
+    """Kiểm tra thông tin người dùng và chuyển tiếp đến bước tiếp theo nếu đầy đủ."""
+    missing_info = []
+
+    # Kiểm tra thiếu nickname
+    if user.nickname.startswith("#CDA") or not user.nickname:
+        missing_info.append("nickname")
+
+    # Kiểm tra thiếu giới thiệu
+    if user.introduce == "Chưa có" or not user.introduce:
+        missing_info.append("giới thiệu")
+
+    if missing_info:
+        # Hiển thị thông tin còn thiếu
+        missing_text = " và ".join(missing_info)
+        text = f'''Bạn chưa hoàn thiện thông tin. Bạn còn thiếu {missing_text}.
+Vui lòng nhập:
+- /nickname để đổi biệt danh
+- /gioithieu để giới thiệu ngắn về mình
+'''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {"text": text}
+        }
+    else:
+        # Nếu đầy đủ, chuyển người dùng sang bước chọn giới tính
+        text = "Thông tin của bạn đã đầy đủ! Hãy tiếp tục đến bước chọn giới tính."
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": text,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "CHỌN GIỚI TÍNH",
+                                "payload": "#NEXT"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    out(payload)
+
+#Postback retry
 
 def postback_error(user):
     payload = {
@@ -547,4 +710,3 @@ def postback_error(user):
         "messaging_type": "RESPONSE"
     }
     out(payload)
-

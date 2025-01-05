@@ -1,14 +1,14 @@
 import pymysql
 from user import User
-
+from constant import *
 # Hàm tạo kết nối đến cơ sở dữ liệu MySQL
 def get_db_connection():
     try:
         conn = pymysql.connect(
-            host='clbcda.mysql.pythonanywhere-services.com',
-            user='clbcda',
-            password='clbcda14022008',
-            database='clbcda$cip'
+            host=host_db,
+            user=user_db,
+            password=pass_db,
+            database=data_db
         )
         return conn
     except pymysql.MySQLError as e:
@@ -232,10 +232,10 @@ def is_nickname_exists(nickname):
     try:
             # Kết nối cơ sở dữ liệu
         conn = pymysql.connect(
-                host='bibungbia.mysql.pythonanywhere-services.com',
-                user='bibungbia',
-                password='nguyenngoclong2322003',
-                database='bibungbia$cip'
+                host=host_db,
+                user=user_db,
+                password=pass_db,
+                database=data_db
         )
         with conn.cursor() as cursor:
             # Truy vấn nickname

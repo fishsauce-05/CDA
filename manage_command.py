@@ -6,44 +6,82 @@ from db_connection import *
 from constant import *
 
 
-def handle_command(user,message_text):
+def handle_command(user, message_text):
     """Xử lý các lệnh người dùng và trả về phản hồi tương ứng."""
-    message = message_text[1:].split()
-    command = message[0]
-    response = process_command(user,command, message)
-    return response
+    # Tách từng dòng của tin nhắn
+    commands = message_text.strip().split("\n")
+    responses = []
 
+    for command_text in commands:
+        if command_text.startswith("/"):
+            message = command_text[1:].split()
+            command = message[0]
+            response = process_command(user, command, message)
+            responses.append(response)
+        else:
+            responses.append("Câu lệnh không hợp lệ. Hãy bắt đầu lệnh với '/'.")
 
-def process_command(user,command, message):
-    """Kiểm tra trạng thái của người dùng và trả về phản hồi tương ứng với lệnh."""
+    # Kết hợp các phản hồi lại thành một chuỗi, mỗi phản hồi trên một dòng
+    return "\n".join(responses)
+
+def process_command(user, command, message):
+    """
+    Kiểm tra trạng thái của người dùng và trả về phản hồi tương ứng với lệnh.
+    """
     if command == "fix":
         user.state = 'WELCOME'
         update_state(user.id, user.state)
         postback_welcome(user)
-        return "Quay về WELCOME, sửa chữa mọi lỗi lầm"
-    if command == "nickname":
-        user.nickname = " ".join(message[1:])
-        if len(user.nickname) > 17:
-            return "Nickname quá dài, giới hạn là 17 kí tự (số tuổi của CDA)"
-        if is_nickname_exists(user.nickname):
-            return f"Nickname '{user.nickname}' đã tồn tại trong hệ thống."
-        else:
-            update_nickname(user.id, user.nickname)
-            return f"Đã đổi nick name thành: {user.nickname}"
-    if command == "gioithieu":
-        user.introduce = " ".join(message[1:])
-        update_introduce(user.id, user.introduce)
-        return f"Đã đổi giới thiệu thành: {user.introduce}"
-    if (command == 'end') | (command == 'End') | (command == 'END'):
-        postback_confirm_end(user)
-        return "Lời kết thúc"
+        return "Quay về WELCOME, sửa chữa mọi lỗi lầm."
 
-    if command == 'state':
-        user.state = message[1]
-        update_state(user.id,user.state)
-        return f"Đã đổi state thành: {user.state}"
-    else:
-        return "Câu lệnh chưa tồn tại, vui lòng kiểm tra danh sách câu lệnh bằng /lenh"
+    if command == "nickname":
+        new_nickname = " ".join(message[1:])
+        if not new_nickname:
+            return "Bạn chưa nhập nickname. Vui lòng nhập nickname sau lệnh /nickname."
+        if len(new_nickname) > 17:
+            return "Nickname quá dài, giới hạn là 17 kí tự."
+        if is_nickname_exists(new_nickname):
+            return f"Nickname '{new_nickname}' đã tồn tại trong hệ thống."
+        else:
+            user.nickname = new_nickname
+            update_nickname(user.id, user.nickname)
+            postback_retry(user)  # Kiểm tra thông tin sau khi đổi nickname
+            return f"Đã đổi nickname thành: {user.nickname}."
+
+    if command == "gioithieu":
+        new_introduce = " ".join(message[1:])
+        if not new_introduce:
+            return "Bạn chưa nhập phần giới thiệu. Vui lòng nhập phần giới thiệu sau lệnh /gioithieu."
+        user.introduce = new_introduce
+        update_introduce(user.id, user.introduce)
+        postback_retry(user)  # Kiểm tra thông tin sau khi đổi giới thiệu
+        return f"Đã đổi giới thiệu thành: {user.introduce}."
+
+    if command.lower() == "end":
+        postback_confirm_end(user)
+        return "Lời kết thúc."
+
+    if command == "state":
+        if len(message) < 2:
+            return "Bạn cần cung cấp state mới. Ví dụ: /state WELCOME."
+        new_state = message[1].upper()
+        user.state = new_state
+        update_state(user.id, user.state)
+        return f"Đã đổi state thành: {user.state}."
+
+    if command == "lenh":
+        return (
+            "Danh sách lệnh khả dụng: \n"
+            "/nickname [biệt danh] - Đặt biệt danh.\n"
+            "/gioithieu [giới thiệu] - Viết giới thiệu ngắn gọn.\n"
+            "/state [state] - Đổi trạng thái.\n"
+            "/fix - Quay về trạng thái ban đầu (WELCOME).\n"
+            "/end - Kết thúc cuộc trò chuyện."
+        )
+
+    return "Câu lệnh chưa tồn tại, vui lòng kiểm tra danh sách câu lệnh bằng /lenh."
+
+
 
 def send_button_template(recipient_id):
     """Gửi generic template với 4 sự lựa chọn và ảnh minh họa"""

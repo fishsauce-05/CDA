@@ -16,7 +16,6 @@ from constant import *
 app = Flask(__name__, static_folder="assets")
 
 VERIFY_TOKEN = "CDA"
-menu_url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -26,64 +25,75 @@ users = get_all_users()
 
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
-    logging.info("------------------ trigger webhook")
+
     if request.method == 'GET':
-        # Lấy thông tin từ query parameters
+        # Facebook xác thực webhook
         mode = request.args.get('hub.mode')
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
 
-        logging.debug(f"Mode: {mode}, Token: {token}, Challenge: {challenge}")
+        return challenge, 200  # Trả về mã xác thực
+        # if mode == 'subscribe' and token == VERIFY_TOKEN:
+        #     return challenge, 200  # Trả về mã xác thực
+        # else:
+        #     return 'Forbidden', 403
 
-        # Kiểm tra token xác minh
-        if mode == 'subscribe' and token == VERIFY_TOKEN:
-            return challenge, 200  # Gửi lại hub.challenge để xác thực
-        else:
-            return 'Forbidden', 403
-
-    if request.method == 'POST':
+    elif request.method == 'POST':
+        # Xử lý tin nhắn từ webhook
         data = request.get_json()
-        logging.info("Received data:", data)
-
-        # Kiểm tra dữ liệu nếu là tin nhắn và lấy thông tin người gửi và nội dung tin nhắn
         if "entry" in data:
             for entry in data["entry"]:
                 if "messaging" in entry:
                     for message_data in entry["messaging"]:
                         sender_id = message_data["sender"]["id"]
-                        if users.get(sender_id) == None:
 
-                            count = len(users) + 1234
-                            nickname = f"#CDA{count:05}"
-                            users[sender_id] = User(sender_id, state = 'WELCOME', nickname = nickname, introduce = "Chưa có")
-                            save_user_to_db(users.get(sender_id))
-                            user = users.get(sender_id)
-                            postback_welcome(user)
+                        # Kiểm tra nếu người dùng mới
+                        if sender_id not in users:
+                            new_user = User(sender_id,"WELCOME")
+                            users[sender_id] = new_user
+                            save_user_to_db(new_user)
 
-                        user = users.get(sender_id)
+                        user = users[sender_id]
 
+                        # Xử lý tin nhắn văn bản và ảnh+ video
                         if "message" in message_data:
-                            message_text = message_data["message"].get("text", "")
-                            print("ID: ", sender_id)
-                            # Gửi phản hồi lại đúng nội dung tin nhắn
-                            if message_text:
-                                # Nếu tin nhắn bắt đầu bằng "/"
-                                if message_text.startswith("/"):
-                                    response = handle_command(user, message_text) #handle_command
-                                    if response:
-                                        send_message(sender_id, response)
-                                else:
-                                    if user.state == 'TALK':
-                                        send_message(user.partner_id, message_text)
+                            if "attachments" in message_data["message"]:
+                                for attachment in message_data["message"]["attachments"]:
+                                    if attachment["type"] == "image":
+                                        image_url = attachment["payload"]["url"]
+                                        if user.state == 'TALK' and user.partner_id:
+                                            send_image(user.partner_id, image_url)
+                                        else:
+                                            send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện.")
+                                    elif attachment["type"] == "video":
+                                        video_url = attachment["payload"]["url"]
+                                        if user.state == 'TALK' and user.partner_id:
+                                            send_video(user.partner_id, video_url)
+                                        else:
+                                            send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện.")
+                            elif "text" in message_data["message"]:
+                                message_text = message_data["message"].get("text", "")
+                                print("ID: ", sender_id)
+                                # Gửi phản hồi lại đúng nội dung tin nhắn
+                                if message_text:
+                                    # Nếu tin nhắn bắt đầu bằng "/"
+                                    if message_text.startswith("/"):
+                                        response = handle_command(user, message_text) #handle_command
+                                        if response:
+                                            send_message(sender_id, response)
                                     else:
-                                        send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
+                                        if user.state == 'TALK':
+                                            send_message(user.partner_id, message_text)
+                                        else:
+                                            send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
 
+                        # Xử lý postback
                         if "postback" in message_data:
-                            handle_postback(user, message_data["postback"]["payload"], users) #handle_postback
+                            handle_postback(user, message_data["postback"]["payload"], users)
                             send_message(sender_id,"CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\nPayload: " + message_data["postback"]["payload"] + "\nState: " + user.state)
 
+        return "Message received", 200
 
-        return "Message Received", 200
 
 
 # def handle_postback(user, payload):
@@ -104,7 +114,27 @@ def webhook():
 #             return None
 #     # message = actions.get(payload, "Lệnh không hợp lệ.")
 #     send_message(user.id, user.state)
+#Gui clip sex 
+def send_video(recipient_id, video_url):
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "recipient": {"id": recipient_id},
+        "message": {
+            "attachment": {
+                "type": "video",
+                "payload": {"url": video_url}
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    try:
+        response = requests.post(f"https://graph.facebook.com/{facebook_api_version}/me/messages?access_token={ACCESS_TOKEN}", headers=headers, json=payload)
+        response.raise_for_status()
+        print(f"Video sent successfully: {response.json()}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send video: {e}")
 
+#Gui clip-send
 def send_message(recipient_id, message_text):
     headers = {"Content-Type": "application/json"}
     payload = {
@@ -113,16 +143,33 @@ def send_message(recipient_id, message_text):
         "messaging_type": "RESPONSE"
     }
     try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx and 5xx)
+        response = requests.post(f"https://graph.facebook.com/{facebook_api_version}/me/messages?access_token={ACCESS_TOKEN}", headers=headers, json=payload)
+        response.raise_for_status()
         print(f"Message sent successfully: {response.json()}")
     except requests.exceptions.RequestException as e:
         print(f"Failed to send message: {e}")
-        if response.status_code == 500:
-            print(f"Response content: {response.text}")
+#Xu ly hinh anh
+def send_image(recipient_id, image_url):
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "recipient": {"id": recipient_id},
+        "message": {
+            "attachment": {
+                "type": "image",
+                "payload": {"url": image_url}
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    try:
+        response = requests.post(f"https://graph.facebook.com/{facebook_api_version}/me/messages?access_token={ACCESS_TOKEN}", headers=headers, json=payload)
+        response.raise_for_status()
+        print(f"Image sent successfully: {response.json()}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send image: {e}")
+
 
 def setup_persistent_menu():
-    menu_url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
     payload = {
         "persistent_menu": [
             {
@@ -149,7 +196,7 @@ def setup_persistent_menu():
         print("Response:", response.json())
 
 def delete_persistent_menu():
-    url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
+    url = f"https://graph.facebook.com/{facebook_api_version}/me/messenger_profile?access_token={ACCESS_TOKEN}"
     payload = {
         "fields": ["persistent_menu"]
     }
@@ -162,7 +209,6 @@ def delete_persistent_menu():
         print(response.json())
 
 def setup_get_started_button():
-    menu_url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
     payload = {
         "get_started": {
             "payload": "#WELCOME"
@@ -180,4 +226,3 @@ if __name__ == "__main__":
     delete_persistent_menu()
     setup_persistent_menu()
     app.run(debug=False, port=5005)
-
