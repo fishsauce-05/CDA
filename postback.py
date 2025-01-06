@@ -15,13 +15,8 @@ def out(payload):
         print(f"Failed to send generic template with image: {e}")
 
 #Bắt đầu sửa từ đây
-def postback_welcome(user): #Template hiện ra lúc chào đón
-    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
-        text = '''Xin chào bạn đến với sự kiện Crush in Ptit
-Sự kiện để cho bạn tìm kiếm có cơ hội tìm tình yêu trong đời mk
-H trước tiên, bạn hãy ấn váo nút 3 gạch ngang ở bên tay phải thanh nhắn tin
-Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
-'''
+def postback_welcome(user):  # Template hiện ra lúc chào đón
+    # Gửi generic template
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -30,9 +25,9 @@ Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
                 "payload": {
                     "template_type": "generic",
                     "elements": [
-                        { #Cục đầu tiên
+                        {
                             "title": "CHAT ẨN DANH NÀO!",
-                            "image_url": "https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-6/375596172_876783230787846_2912688737487120703_n.png?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGnmMGldbXLaqbYyCTKWw_TfBMnLcq6ceR8Eyctyrpx5FfLuPf1Qy6UjaEhe3z71SaXpR4mnzcjBqM9OyL7w3vb&_nc_ohc=MWH29r0qwwoQ7kNvgFWWpGv&_nc_zt=23&_nc_ht=scontent.fhan5-9.fna&_nc_gid=AFjUetjTLuB8729BhuhF1mg&oh=00_AYDyYbWplN_Mm6Efk3h98lHN5CG8DFAoeWSCS3_NI1mtoQ&oe=677F4BED",  # Thay thế bằng URL hình ảnh bạn muốn,
+                            "image_url": "https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-6/375596172_876783230787846_2912688737487120703_n.png",
                             "buttons": [
                                 {
                                     "type": "postback",
@@ -51,9 +46,9 @@ Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
                                 }
                             ]
                         },
-                        { #Cục thứ 2
+                        {
                             "title": "ĐANG CÓ GÌ DIỄN RA VẬY?",
-                            "image_url": "https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/366683630_144682238678402_7554415388400685595_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHqu4RPoy__AHrnLR4zSs-jsxe4Ibj_YGWzF7ghuP9gZT2ujoYig1dOVKbysTzAjFF0tikNzRg2KYfKWdMwebLM&_nc_ohc=xK7K1Orii7wQ7kNvgFYHCQ-&_nc_zt=23&_nc_ht=scontent.fhan5-11.fna&_nc_gid=AG4J78jvFXawC_d58gFyLEo&oh=00_AYC66JN2HGV26-i9Gr0CTnAAPB-Qfv4ATgVsixr8SBtLow&oe=677F59C2", # Thay thế bằng URL hình ảnh bạn muốn,
+                            "image_url": "https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/366683630_144682238678402_7554415388400685595_n.jpg",
                             "buttons": [
                                 {
                                     "type": "web_url",
@@ -65,27 +60,26 @@ Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
                                     "title": "Xem hàng chờ",
                                     "payload": "MENU_VIEW_QUEUE"
                                 }
-
                             ]
                         },
-                        { #Cục thứ 3
+                        {
                             "title": "ALO, TÔI NGHE",
-                            "image_url": "https://bibungbia.pythonanywhere.com/assets/fire.png",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": "https://bibungbia.pythonanywhere.com/assets/fire.png",
                             "buttons": [
                                 {
-                                    "type":"web_url",
+                                    "type": "web_url",
                                     "title": "Báo lỗi",
-                                    "url":"https://www.messenger.com/t/226475877409994"
+                                    "url": "https://www.messenger.com/t/226475877409994"
                                 },
                                 {
                                     "type": "web_url",
                                     "title": "Liên hệ admin",
-                                    "payload": "https://www.messenger.com/t/226475877409994"
+                                    "url": "https://www.messenger.com/t/226475877409994"
                                 },
                                 {
-                                    "type":"web_url",
+                                    "type": "web_url",
                                     "title": "Fanpage CDA",
-                                    "url":"https://www.facebook.com/CDAclub"
+                                    "url": "https://www.facebook.com/CDAclub"
                                 }
                             ]
                         }
@@ -96,61 +90,68 @@ Tiếp theo, bạn ấn váo nút "BẮT ĐẦU"
     }
     out(payload)
 
+    # Gửi tin nhắn văn bản chào mừng
+    text = (
+        "🎉 Chào mừng sự trở lại của Chatbot Hẹn Hò! 🎉\n\n"
+        "Sau một thời gian vắng bóng, chatbot hẹn hò của CDA đã chính thức quay trở lại và mạnh mẽ hơn bao giờ hết! 🚀 "
+        "Với những nâng cấp đáng chú ý, chatbot hẹn hò giờ đây không chỉ giúp bạn tìm được những cuộc trò chuyện thú vị mà còn mang lại những kết nối thực sự, gần gũi và cá nhân hóa hơn.\n\n"
+        "✨ Tại sao bạn nên thử sử dụng chatbot hẹn hò của CDA:\n"
+        "💬 Tìm kiếm bạn đồng hành: Chatbot giúp bạn khám phá những hồ sơ phù hợp với sở thích và yêu cầu của bạn.\n"
+        "💡 Gợi ý những câu hỏi hẹn hò: Chatbot cung cấp những câu hỏi thú vị để bạn dễ dàng tạo ra một cuộc trò chuyện lôi cuốn.\n"
+        "📅 Trò chuyện tự động và nhanh chóng: Bạn có thể trò chuyện với chatbot để làm quen và tìm hiểu, hoặc đơn giản là giải trí.\n"
+        "💬 Hỗ trợ 24/7: Dù bạn ở đâu, vào lúc nào, chatbot luôn sẵn sàng trợ giúp.\n"
+        "🔒 Tính năng bảo mật và riêng tư: Mọi thông tin cá nhân của bạn sẽ được bảo vệ an toàn.\n\n"
+        "🎉 Trải nghiệm ngay và tìm kiếm tình yêu! Đừng ngần ngại trò chuyện với chatbot của chúng mình để bắt đầu hành trình tìm kiếm một nửa yêu thương!\n\n"
+        "👉 Để bắt đầu, hãy ấn nút 'BẮT ĐẦU' ngay nhé!"
+    )
+
+    payload_text = {
+        "recipient": {"id": user.id},
+        "message": {"text": text}
+    }
+    out(payload_text)
+
+
+
+
+
+def postback_first_come_nickname(user):
+    # Kiểm tra nickname
+    if not user.introduce or user.introduce == "Chưa có":
+        text = '''Bạn hãy nhập theo cú pháp sau: /nickname <nickname_của_bạn>
+        '''
+        payload = {
+            "recipient": {"id": user.id},
+            "message": {"text": text}
+        }
+        out(payload)
+        return False  # Chưa hoàn thành bước này
+    return True  #  giới thiệu đã hợp lệ
+
 def postback_first_come(user):
-    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
-        text = f'''Bạn chưa nhập đủ thông tin. Vui lòng thêm thông tin để tiếp tục:
-Nickname hiện tại: {user.nickname if user.nickname else 'Chưa nhập'}
-Giới thiệu hiện tại: {user.introduce if user.introduce else 'Chưa nhập'}
-
-Để thay đổi, gõ /nickname và /gioithieu
-Ví dụ:
-/nickname vì_tinh_tú_97
-/gioithieu Cậu có phải là đom đóm không? Tớ thích đom đóm lắm nè
-        '''
-        payload = {
-            "recipient": {"id": user.id},
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": text,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "NHẬP THÔNG TIN",
-                                "payload": "#RETRY"
-                            }
-                        ]
-                    }
+    text = f'''Nickname hiện tại:
+Giới thiệu hiện tại:
+Nen viec dau tien cua ban se la dien nickname
+'''
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": text,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Điền thông tin bản thân",
+                            "payload": "#START_NHAP"
+                        }
+                    ]
                 }
             }
         }
-    else:
-        text = f'''Nickname hiện tại: {user.nickname}
-Giới thiệu hiện tại: {user.introduce}
-
-Bạn đã sẵn sàng tiếp tục!
-        '''
-        payload = {
-            "recipient": {"id": user.id},
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": text,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "TIẾP",
-                                "payload": "#NEXT"
-                            }
-                        ]
-                    }
-                }
-            }
-        }
+    }
     out(payload)
 
 
@@ -213,10 +214,9 @@ Ví dụ:
 
 def postback_setting(user):
     if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
-        text = '''Bạn chưa nhập đủ thông tin. Vui lòng nhập thông tin trước khi tiếp tục.
+        text = '''Tiếp tới, bạn hãy điền phần giới thiệu. Vui lòng nhập thông tin trước khi tiếp tục.
 Câu lệnh:
-/nickname để đổi biệt danh
-/gioithieu để giới thiệu ngắn về mình
+/gioithieu <giới_thiệu_bản_thân>
 '''
         payload = {
             "recipient": {"id": user.id},
@@ -581,9 +581,27 @@ Hãy gõ /lenh để hiển thị tất cả những câu lệnh bạn có thể
     }
     out(payload)
 
-def postback_introduction(user): #Giới thiệu về ứng dụng
-    payload= {}
+def postback_introduction(user):
+    """Gửi tin nhắn giới thiệu về chatbot."""
+    text = (
+        f"🎉 Xin chào {user.nickname if user.nickname else 'bạn'}! 🎉\n\n"
+        "Chào mừng bạn đến với chatbot Hẹn Hò CDA! Đây là những tính năng nổi bật mà chúng tôi mang lại:\n\n"
+        "✨ **Tính năng nổi bật:**\n"
+        "💬 **Trò chuyện ẩn danh:** Tìm kiếm những cuộc trò chuyện thú vị và kết nối với những người bạn mới.\n"
+        "💡 **Gợi ý câu hỏi thú vị:** Không biết bắt đầu từ đâu? Hãy thử các gợi ý mở đầu cực hay ho của chúng tôi.\n"
+        "📅 **Trò chuyện mọi lúc mọi nơi:** Không giới hạn thời gian, bạn có thể sử dụng chatbot 24/7.\n"
+        "🔒 **Bảo mật tuyệt đối:** Tất cả thông tin của bạn sẽ được giữ riêng tư.\n\n"
+        "👉 Hãy bắt đầu hành trình của bạn ngay bây giờ bằng cách nhấn nút **'Bắt đầu'** hoặc chọn tính năng mà bạn yêu thích!\n\n"
+        "Chúc bạn có trải nghiệm thật tuyệt vời! 😊"
+    )
+
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": text},
+        "messaging_type": "RESPONSE"
+    }
     out(payload)
+
 
 def initiate_reply(user, message_id):
     """Yêu cầu người dùng nhập nội dung phản hồi."""
@@ -636,13 +654,225 @@ def postback_change_info(user): #Nằm ở menu khi người dùng muốn đổi
     payload= {}
     out(payload)
 
-def postback_suggest(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+#def postback_suggest(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+#    payload = {
+#        "recipient": {"id": user.id},
+#        "message": {"text": "Chào bạn, bạn ăn cơm chưa \n Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ ? Nếu không thì cho mình thử nhé :3 \n Trời lạnh như này mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong \n Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian của cuộc đời không, vậy nên hãy đền bù bằng cách trò chuyện với tớ hôm nay đi \n Cậu ơi mình đang làm một bài khảo sát : Cậu thích uống trà sữa với đường hay với tớ hơn vậy \n Nay xem tarot người ta bảo tớ nhắn tin với định mệnh mà tình cờ thế nào nay tớ lại nhắn với mỗi cậu nhỉ "},
+#        "messaging_type": "RESPONSE"
+#    }
+#    out(payload)
+def postback_suggest(user):
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "Chào bạn, bạn ăn cơm chưa \n Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ ? Nếu không thì cho mình thử nhé :3 \n Trời lạnh như này mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong \n Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian của cuộc đời không, vậy nên hãy đền bù bằng cách trò chuyện với tớ hôm nay đi \n Cậu ơi mình đang làm một bài khảo sát : Cậu thích uống trà sữa với đường hay với tớ hơn vậy \n Nay xem tarot người ta bảo tớ nhắn tin với định mệnh mà tình cờ thế nào nay tớ lại nhắn với mỗi cậu nhỉ "},
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Trước tiên bạn muốn lựa chọn thả thính dưới phong cách trai hay gái",
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Nam",
+                            "payload": "SUGGEST_BOY"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Nữ",
+                            "payload": "SUGGEST_GIRL"
+                        },
+                    ]
+                }
+            }
+        },
         "messaging_type": "RESPONSE"
     }
     out(payload)
+def postback_suggest_boy(user):
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": (
+                        "Bạn chỉ việc nhấn vào nút và văn bản sẽ được chuyển sang cho người được ghép cặp với bạn.\n\n"
+                        "1. Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ? "
+                        "Nếu không thì cho mình thử nhé 😎✨\n"
+                        "2. Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian không? "
+                        "Vậy nên đền bù cho tớ bằng cách trò chuyện hôm nay đi! 😏🕒\n"
+                        "3. Mình đang làm khảo sát: Bạn thích uống trà sữa với đường hay với mình hơn? "
+                        "Đừng chọn sai nhé 😉🧋"
+                    ),
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Tự tin, hài hước",
+                            "payload": "SUGGEST_BOY_1"
+                        },
+                        {
+                            "type": "postback",
+                            "title": 'Táo bạo, dí dỏm',
+                            "payload": "SUGGEST_BOY_2"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Dễ thương, vui vẻ",
+                            "payload": "SUGGEST_BOY_3"
+                        }
+                    ]
+                }
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+
+def postback_suggest_boy1(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ? Nếu không thì cho mình thử nhé 😎✨"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+def postback_suggest_boy2(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian không? Vậy nên đền bù cho tớ bằng cách trò chuyện hôm nay đi! 😏🕒"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+def postback_suggest_boy3(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Mình đang làm khảo sát: Bạn thích uống trà sữa với đường hay với mình hơn? Đừng chọn sai nhé 😉🧋"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+def postback_suggest_girl(user):
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": (
+                        "Bạn chỉ việc nhấn vào nút và văn bản sẽ được gửi tới người được ghép cặp.\n\n"
+                        "1. Trời lạnh như này, mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong? 🧥❄️\n"
+                        "2. Nay xem tarot, người ta bảo tớ nhắn tin với định mệnh. "
+                        "Tự nhiên tớ lại nhắn với cậu, cậu thấy có hợp lý không? 🔮😌\n"
+                        "3. Cậu thích kiểu người nói chuyện thú vị hay đáng yêu hơn? "
+                        "Vì mình giỏi cả hai nên hơi phân vân! 😊💬"
+                    ),
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Ấm áp, nhẹ nhàng.",
+                            "payload": "SUGGEST_GIRL_1"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Huyền bí, tinh tế",
+                            "payload": "SUGGEST_GIRL_2"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Hài hước, đáng yêu.",
+                            "payload": "SUGGEST_GIRL_3"
+                        }
+                    ]
+                }
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+
+def postback_suggest_girl1(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Trời lạnh như này, mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong? 🧥❄️"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+def postback_suggest_girl2(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Nay xem tarot, người ta bảo tớ nhắn tin với định mệnh. Tự nhiên tớ lại nhắn với cậu, cậu thấy có hợp lý không? 🔮😌"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+def postback_suggest_girl3(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Sent a message" },
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+    payload = {
+        "recipient": {"id": user.partner_id},
+        "message": {"text": "Cậu thích kiểu người nói chuyện thú vị hay đáng yêu hơn? Vì mình giỏi cả hai nên hơi phân vân! 😊💬"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
+
+#def postback_suggest_boy(user):
+#    messages = [
+#        "Dành cho Nam nè",
+#        "1.Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ? Nếu không thì cho mình thử nhé 😎✨",
+#        "2.Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian không? Vậy nên đền bù cho tớ bằng cách trò chuyện hôm nay đi! 😏🕒",
+#        "3.Mình đang làm khảo sát: Bạn thích uống trà sữa với đường hay với mình hơn? Đừng chọn sai nhé 😉🧋"
+#    ]
+#    payload = {
+#        "recipient": {"id": user.id},
+#        "message": {"text": "\n\n".join(messages)},
+#        "messaging_type": "RESPONSE"
+#    }
+#    out(payload)
+
+def postback_send_button(user):
+    test_message = "Đây là một tin nhắn test tự động từ chatbot!"
+    send_message(user.id, test_message)  # Gửi tin nhắn trước
+
+    payload = {
+        "recipient": {"id": user.id},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)  # Gửi payload nếu cần
+
+
 def postback_still_chat(user):
     payload = {
         "recipient": {"id": user.id},
@@ -700,6 +930,7 @@ Vui lòng nhập:
             }
         }
     out(payload)
+
 
 #Postback retry
 

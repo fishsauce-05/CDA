@@ -8,7 +8,7 @@ from constant import *
 
 state_postback = { #MU vo dich nhe anh em
     'WELCOME':          ['#WELCOME', '#START', 'MENU_INTRODUCTION', 'MENU_GUIDE', 'MENU_VIEW_QUEUE', '#RETRY', '#END'],
-    'SETTING':          ['#CHANGE', '#SEARCH', '#NEXT', '#RETRY', '#WELCOME', '#END'],
+    'SETTING':          ['#CHANGE', '#SEARCH', '#NEXT', '#RETRY', '#START_NHAP','#WELCOME', '#END'],
     'SET_GENDER':       ['#ME_MALE', '#ME_FEMALE', '#ME_BI', '#RETRY', '#END'],
     'PARTNER_GENDER':   ['#YOU_MALE', '#YOU_FEMALE', '#YOU_BI', '#CONFIRM_INFO', '#RETRY', '#END'],
     'SEARCH':           ['#SEARCH', '#STOP_SEARCH', '#RETRY', '#END'],
@@ -27,16 +27,19 @@ def handle_postback(user, payload, users):
         if payload in state_postback.get(user.state):
             return_postback(user, payload, users)
         else:
+            error_message = "Payload không có trong state"  # Mặc định
+            # Kiểm tra nếu trạng thái là SEARCH
+            if user.state == "SEARCH":
+                error_message = "Bạn đang tìm kiếm, hãy ấn dừng tìm kiếm để tiếp tục hành động trên"
+
             payload = {
-            "recipient": {"id": user.id},
-            "message": {"text": "Payload không có trong state"},
-            "messaging_type": "RESPONSE"
+                "recipient": {"id": user.id},
+                "message": {"text": error_message},
+                "messaging_type": "RESPONSE"
             }
             out(payload)
     else:
         return_postback(user, payload, users)
-
-
 
 def return_postback(user, payload, users):
     if payload.startswith('#'):
@@ -55,12 +58,14 @@ def return_postback(user, payload, users):
                     postback_first_come(user)
                     user.state = 'SETTING'
                     update_state(user.id, user.state)
-
+            case '#START_NHAP':
+                user.state = 'SETTING'
+                update_state(user.id, user.state)
+                postback_first_come_nickname(user)
             case '#NEXT':
                 user.state = 'SET_GENDER'
                 update_state(user.id, user.state)
                 postback_setgender(user)
-
             case '#CHANGE':
                 #kiểm tra xem có trong hàng chờ không, có thì cút
                 # if user.id in list_wait:
@@ -234,5 +239,21 @@ def return_postback(user, payload, users):
                 postback_change_info(user) #gõ /nickname để đổi biệt danh, /gioithieu để đổi giới thiệu về bạn, /gioitinh Nam, Nu, Bi để đổi giới tính, /gu Nam, Nu, Bi để đổi gu
             case 'SUGGEST':
                 postback_suggest(user) #gNoợi ý những câu mở đầu
+            case 'SUGGEST_BOY':
+                postback_suggest_boy(user) #gNoợi ý những câu mở đầu
+            case 'SUGGEST_BOY_1':
+                postback_suggest_boy1(user)
+            case 'SUGGEST_BOY_2':
+                postback_suggest_boy2(user)
+            case 'SUGGEST_BOY_3':
+                postback_suggest_boy3(user)
+            case 'SUGGEST_GIRL':
+                postback_suggest_girl(user)  # Gợi ý menu chính dành cho nữ
+            case 'SUGGEST_GIRL_1':
+                postback_suggest_girl1(user)  # Gợi ý 1: Ấm áp, quan tâm, nhẹ nhàng
+            case 'SUGGEST_GIRL_2':
+                postback_suggest_girl2(user)  # Gợi ý 2: Huyền bí, tinh tế, thú vị
+            case 'SUGGEST_GIRL_3':
+                postback_suggest_girl3(user)  # Gợi ý 3: Hài hước, sáng tạo, đáng yêu
             case 'NOTHING':
                 postback_still_chat(user)

@@ -32,11 +32,10 @@ def webhook():
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
 
-        return challenge, 200  # Trả về mã xác thực
-        # if mode == 'subscribe' and token == VERIFY_TOKEN:
-        #     return challenge, 200  # Trả về mã xác thực
-        # else:
-        #     return 'Forbidden', 403
+        if mode == 'subscribe' and token == VERIFY_TOKEN:
+            return challenge, 200  # Trả về mã xác thực
+        else:
+            return 'Forbidden', 403
 
     elif request.method == 'POST':
         # Xử lý tin nhắn từ webhook
@@ -114,7 +113,7 @@ def webhook():
 #             return None
 #     # message = actions.get(payload, "Lệnh không hợp lệ.")
 #     send_message(user.id, user.state)
-#Gui clip sex 
+#Gui clip sex
 def send_video(recipient_id, video_url):
     headers = {"Content-Type": "application/json"}
     payload = {
