@@ -70,6 +70,13 @@ def webhook():
                                             send_video(user.partner_id, video_url)
                                         else:
                                             send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện.")
+                                    elif attachment["type"] == "audio":
+                                        audio_url = attachment["payload"]["url"]
+                                        if user.state == 'TALK' and user.partner_id:
+                                            send_message(sender_id, "Nhớ giọng Trinh vãiii")
+                                            send_audio(user.partner_id, audio_url)
+                                        else:
+                                            send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện")
                             elif "text" in message_data["message"]:
                                 message_text = message_data["message"].get("text", "")
                                 print("ID: ", sender_id)
@@ -85,7 +92,6 @@ def webhook():
                                             send_message(user.partner_id, message_text)
                                         else:
                                             send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
-
                         # Xử lý postback
                         if "postback" in message_data:
                             handle_postback(user, message_data["postback"]["payload"], users)
@@ -113,6 +119,26 @@ def webhook():
 #             return None
 #     # message = actions.get(payload, "Lệnh không hợp lệ.")
 #     send_message(user.id, user.state)
+
+def send_audio(recipient_id, audio_url):
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "recipient": {"id": recipient_id},
+        "message": {
+            "attachment": {
+                "type": "audio",
+                "payload": {"url": audio_url}
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    try:
+        response = requests.post(f"https://graph.facebook.com/{facebook_api_version}/me/messages?access_token={ACCESS_TOKEN}", headers=headers, json=payload)
+        response.raise_for_status()
+        print(f"Audio sent successfully: {response.json()}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send audio: {e}")
+
 #Gui clip sex
 def send_video(recipient_id, video_url):
     headers = {"Content-Type": "application/json"}
