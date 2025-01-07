@@ -64,7 +64,6 @@ def webhook():
                                             send_image(user.partner_id, image_url)
                                         else:
                                             send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện.")
-                                        send_message(sender_id, image_url)
                                     elif attachment["type"] == "video":
                                         video_url = attachment["payload"]["url"]
                                         if user.state == 'TALK' and user.partner_id:
