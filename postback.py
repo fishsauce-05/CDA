@@ -15,6 +15,26 @@ def out(payload):
         print(f"Failed to send generic template with image: {e}")
 
 #Bắt đầu sửa từ đây
+
+def send_image(recipient_id, image_url):
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "recipient": {"id": recipient_id},
+        "message": {
+            "attachment": {
+                "type": "image",
+                "payload": {"url": image_url}
+            }
+        },
+        "messaging_type": "RESPONSE"
+    }
+    try:
+        response = requests.post(f"https://graph.facebook.com/{facebook_api_version}/me/messages?access_token={ACCESS_TOKEN}", headers=headers, json=payload)
+        response.raise_for_status()
+        print(f"Image sent successfully: {response.json()}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send image: {e}")
+
 def postback_welcome(user):  # Template hiện ra lúc chào đón
     # Kiểm tra thông tin nickname và giới thiệu
     if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
@@ -120,11 +140,7 @@ def postback_welcome(user):  # Template hiện ra lúc chào đón
         }
     }
     out(payload)
-
-
-
-
-
+    send_image(user.id, sticker_welcome)
 
 
 def postback_first_come_nickname(user):
@@ -380,6 +396,7 @@ def postback_search(user): #Thông báo bắt đầu tìm kiếm
         }
     }
     out(payload)
+    send_image(user.id, sticker_search)
 
 def postback_found(user, partner, wait_time):
     #Code ne
@@ -481,6 +498,8 @@ Chúc bạn ngon miệng!
         }
     }
     out(payload)
+    send_image(user.id, sticker_found_finder)
+    send_image(user.id, sticker_found_waiter)
 
 
 def postback_feedback(user): #Yêu cầu người dùng feedback về cuộc trò chuyện vừa rồi

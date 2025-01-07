@@ -22,3 +22,10 @@ image_menu_welcome_3 = "https://scontent.fhan14-4.fna.fbcdn.net/v/t39.30808-6/37
 
 #EAAMKvcenz40BOZCNZA5TaYwfcyrd403LZAiE0xEiIRyGChu3WkFaX54u75sghT6wZB7eRseqpT2h4VwMYKyQOm4oziZBttKZAYOWlspfxNf0MzfkfhLYnPFhz78Bss3R1DXNDxweMEnvmFL0INlTnYqlVZCDY6GNmkIZA98Ao6g0sY38eYpZC2rnNjkFqnTU5rXbq
 #103354986151989
+
+sticker_welcome = "https://scontent.xx.fbcdn.net/v/t39.1997-6/17634280_1747090245602227_967632956145270784_n.png?stp=dst-png_s100x100&_nc_cat=1&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=ELmdV2dcVBkQ7kNvgE8RQOS&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=ArcLqFSIaAGKzbeQHJ1FGSu&oh=00_AYBaxHja8jVgBzSY_zbKk5hq7AX4MSC9zWphtV0EbGjXrg&oe=67835EF6"
+sticker_search = "https://scontent.xx.fbcdn.net/v/t39.1997-6/64505140_1552340514901502_2803140126908088320_n.png?stp=dst-png_s100x100&_nc_cat=100&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=9Rc2BEiOSIIQ7kNvgHpho41&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=AICsXuGcpHwaZOV2zLedjuq&oh=00_AYAhcOaONQzptnCoNYTakar6_ZF56rHPidq4UGIxFcjFIA&oe=6783506F"
+sticker_found_waiter = "https://scontent.xx.fbcdn.net/v/t39.1997-6/70077147_2417677345144158_8029847784037285888_n.png?stp=dst-png_s100x100&_nc_cat=1&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=LfY-CvpSULoQ7kNvgE_T3xH&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=Ao6QUmC9kdqKGUMYpVU3EQB&oh=00_AYC_kuSrbKWbev96xZvpZEYxYSg1Bm1EjfEczRPiid2aug&oe=67833F6D"
+sticker_found_finder = "https://scontent.xx.fbcdn.net/v/t39.1997-6/17351670_193083034543967_2101981557580365824_n.png?stp=dst-png_s100x100&_nc_cat=105&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=WgcOq42lORkQ7kNvgEyPHpo&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=ANzwJoOvUxF2J4fXXFRv0pK&oh=00_AYBXZLIvV3cxofWTpyGWgv2QUt4uHuFxqjPACQ7XpBK_Bw&oe=67835AC7"
+
+gg_form_url = "https://facebook.com"
