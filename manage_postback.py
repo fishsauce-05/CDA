@@ -27,10 +27,10 @@ def handle_postback(user, payload, users):
         if payload in state_postback.get(user.state):
             return_postback(user, payload, users)
         else:
-            error_message = "Payload không có trong state"  # Mặc định
+            error_message = "🤖 Lỗi lỗi!!!\nVui lòng thử lại"  # Mặc định
             # Kiểm tra nếu trạng thái là SEARCH
             if user.state == "SEARCH":
-                error_message = "Bạn đang tìm kiếm, hãy ấn dừng tìm kiếm để tiếp tục hành động trên"
+                error_message = "🤖 Bạn đang tìm kiếm, hãy ấn dừng tìm kiếm để tiếp tục hành động trên"
 
             payload = {
                 "recipient": {"id": user.id},
@@ -221,7 +221,6 @@ def return_postback(user, payload, users):
                 user.state = 'SETTING'
                 update_state(user.id, user.state)
                 postback_setting(user)
-
 
 
     # Những cái không liên quan đến state
