@@ -1,4 +1,4 @@
-ACCESS_TOKEN = "EAAMKvcenz40BOZCNZA5TaYwfcyrd403LZAiE0xEiIRyGChu3WkFaX54u75sghT6wZB7eRseqpT2h4VwMYKyQOm4oziZBttKZAYOWlspfxNf0MzfkfhLYnPFhz78Bss3R1DXNDxweMEnvmFL0INlTnYqlVZCDY6GNmkIZA98Ao6g0sY38eYpZC2rnNjkFqnTU5rXbq"
+ACCESS_TOKEN = "EAAMKvcenz40BOZBb1LN4xaaLuyo3PD0UvDvTSnkXIjYWCsXGKDMHfCpadW9bN1V4ZCUpMqToWw5M0ZBupqAMdryO57qRVIb26iZBnHAMcS5CNxGZBhutbKrlNVSx89IAIUk0TDgfO9DVBvZCfZBNDCravGUHljssKiGSYC1ZBvZBiTzo5oevVeAsTEFhCZCAXTXcjZC"
 url = f"https://graph.facebook.com/v17.0/103354986151989/messages?access_token={ACCESS_TOKEN}"
 menu_url = f"https://graph.facebook.com/v17.0/me/messenger_profile?access_token={ACCESS_TOKEN}"
 facebook_api_version = "v17.0"

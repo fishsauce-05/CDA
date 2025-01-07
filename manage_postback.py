@@ -257,3 +257,5 @@ def return_postback(user, payload, users):
                 postback_suggest_girl3(user)  # Gợi ý 3: Hài hước, sáng tạo, đáng yêu
             case 'NOTHING':
                 postback_still_chat(user)
+            case 'GAME':
+                postback_game(user)

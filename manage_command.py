@@ -74,8 +74,6 @@ def process_command(user, command, message):
             "Danh sách lệnh khả dụng: \n"
             "/nickname [biệt danh] - Đặt biệt danh.\n"
             "/gioithieu [giới thiệu] - Viết giới thiệu ngắn gọn.\n"
-            "/state [state] - Đổi trạng thái.\n"
-            "/fix - Quay về trạng thái ban đầu (WELCOME).\n"
             "/end - Kết thúc cuộc trò chuyện."
         )
 
@@ -96,7 +94,7 @@ def send_button_template(recipient_id):
                     "elements": [
                         {
                             "title": "CHAT ẨN DANH NÀO!",
-                            "image_url": "https://cdn.tuoitre.vn/thumb_w/480/471584752817336320/2023/3/5/cau-do-2-16779929961011467051251.jpg",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": image_menu_welcome_1,  # Thay thế bằng URL hình ảnh bạn muốn
                             "buttons": [
                                 {
                                     "type": "postback",
@@ -117,7 +115,7 @@ def send_button_template(recipient_id):
                         },
                         {
                             "title": "CHUYỆN GÌ ĐANG DIỄN RA VẬY?",
-                            "image_url": "https://cdn.tuoitre.vn/thumb_w/480/471584752817336320/2023/3/5/cau-do-1-16779929960982066590826.jpg",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": image_menu_welcome_2,  # Thay thế bằng URL hình ảnh bạn muốn
                             "buttons": [
                                 {
                                     "type": "postback",
@@ -134,7 +132,7 @@ def send_button_template(recipient_id):
                         },
                         {
                             "title": "LIÊN HỆ CHÚNG MÌNH",
-                            "image_url": "https://bibungbia.pythonanywhere.com/assets/fire.png",  # Thay thế bằng URL hình ảnh bạn muốn
+                            "image_url": image_menu_welcome_3,  # Thay thế bằng URL hình ảnh bạn muốn
                             "buttons": [
                                 {
                                     "type":"web_url",

@@ -64,6 +64,7 @@ def webhook():
                                             send_image(user.partner_id, image_url)
                                         else:
                                             send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện.")
+                                        send_message(sender_id, image_url)
                                     elif attachment["type"] == "video":
                                         video_url = attachment["payload"]["url"]
                                         if user.state == 'TALK' and user.partner_id:
@@ -73,7 +74,7 @@ def webhook():
                                     elif attachment["type"] == "audio":
                                         audio_url = attachment["payload"]["url"]
                                         if user.state == 'TALK' and user.partner_id:
-                                            send_message(sender_id, "Nhớ giọng Trinh vãiii")
+                                           # send_message(sender_id, "Nhớ giọng Trinh vãiii")
                                             send_audio(user.partner_id, audio_url)
                                         else:
                                             send_message(sender_id, "Bạn chưa có đối phương trong cuộc trò chuyện")
@@ -90,12 +91,18 @@ def webhook():
                                     else:
                                         if user.state == 'TALK':
                                             send_message(user.partner_id, message_text)
+                                        # else:
+                                        #     send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
+                                        elif user.state == 'WELCOME' or user.state == 'END':
+                                            postback_welcome(user)
                                         else:
-                                            send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
+                                            send_message(sender_id, "🤖 Dường như bạn đang chưa rõ cách hoạt động của tụi mình\n Hãy bấm vào nút *Hướng dẫn sử dụng* để hiểu rõ hơn cách tụi mình hoạt động nhé!")
+                                           # send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
+
                         # Xử lý postback
                         if "postback" in message_data:
                             handle_postback(user, message_data["postback"]["payload"], users)
-                            send_message(sender_id,"CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\nPayload: " + message_data["postback"]["payload"] + "\nState: " + user.state)
+                          #  send_message(sender_id,"CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\nPayload: " + message_data["postback"]["payload"] + "\nState: " + user.state)
 
         return "Message received", 200
 
@@ -120,6 +127,7 @@ def webhook():
 #     # message = actions.get(payload, "Lệnh không hợp lệ.")
 #     send_message(user.id, user.state)
 
+#Giong Trinh dauu
 def send_audio(recipient_id, audio_url):
     headers = {"Content-Type": "application/json"}
     payload = {
@@ -139,7 +147,7 @@ def send_audio(recipient_id, audio_url):
     except requests.exceptions.RequestException as e:
         print(f"Failed to send audio: {e}")
 
-#Gui clip sex
+#Gui clip
 def send_video(recipient_id, video_url):
     headers = {"Content-Type": "application/json"}
     payload = {
@@ -193,7 +201,6 @@ def send_image(recipient_id, image_url):
     except requests.exceptions.RequestException as e:
         print(f"Failed to send image: {e}")
 
-
 def setup_persistent_menu():
     payload = {
         "persistent_menu": [
@@ -205,7 +212,6 @@ def setup_persistent_menu():
                     {"type": "postback", "title": "Hướng dẫn", "payload": "MENU_GUIDE"},
                     {"type": "postback", "title": "❌KẾT THÚC", "payload": "MENU_END"},
                     {"type": "postback", "title": "Đổi thông tin", "payload": "MENU_CHANGE_INFO"},
-                    {"type": "postback", "title": "Report", "payload": "MENU_REPORT"},
                     {"type": "postback", "title": "Xem hàng chờ", "payload": "MENU_VIEW_QUEUE"}
                 ]
             }

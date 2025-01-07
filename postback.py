@@ -16,7 +16,38 @@ def out(payload):
 
 #Bắt đầu sửa từ đây
 def postback_welcome(user):  # Template hiện ra lúc chào đón
-    # Gửi generic template
+    # Kiểm tra thông tin nickname và giới thiệu
+    if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
+        text = (
+            "🎉 Chào mừng sự trở lại của Chatbot Hẹn Hò! 🎉\n\n"
+            "Sau một thời gian vắng bóng, chatbot hẹn hò của CDA đã chính thức quay trở lại và mạnh mẽ hơn bao giờ hết! 🚀 "
+            "Với những nâng cấp đáng chú ý, chatbot hẹn hò giờ đây không chỉ giúp bạn tìm được những cuộc trò chuyện thú vị mà còn mang lại những kết nối thực sự, gần gũi và cá nhân hóa hơn.\n\n"
+            "✨ Tại sao bạn nên thử sử dụng chatbot hẹn hò của CDA:\n"
+            "💬 Tìm kiếm bạn đồng hành: Chatbot giúp bạn khám phá những hồ sơ phù hợp với sở thích và yêu cầu của bạn.\n"
+            "💡 Gợi ý những câu hỏi hẹn hò: Chatbot cung cấp những câu hỏi thú vị để bạn dễ dàng tạo ra một cuộc trò chuyện lôi cuốn.\n"
+            "📅 Trò chuyện tự động và nhanh chóng: Bạn có thể trò chuyện với chatbot để làm quen và tìm hiểu, hoặc đơn giản là giải trí.\n"
+            "💬 Hỗ trợ 24/7: Dù bạn ở đâu, vào lúc nào, chatbot luôn sẵn sàng trợ giúp.\n"
+            "🔒 Tính năng bảo mật và riêng tư: Mọi thông tin cá nhân của bạn sẽ được bảo vệ an toàn.\n\n"
+            "🎉 Trải nghiệm ngay và tìm kiếm tình yêu! Đừng ngần ngại trò chuyện với chatbot của chúng mình để bắt đầu hành trình tìm kiếm một nửa yêu thương!\n\n"
+            "👉 Để bắt đầu, hãy ấn nút *BẮT ĐẦU* ngay nhé!"
+        )
+        payload_text = {
+            "recipient": {"id": user.id},
+            "message": {"text": text}
+        }
+        out(payload_text)
+
+    text = (
+        "🎉 Trang chủ của Chatbot Hẹn Hò!"
+    )
+
+    payload_text = {
+        "recipient": {"id": user.id},
+        "message": {"text": text}
+    }
+    out(payload_text)
+
+    # Luôn hiển thị template chào mừng
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -90,26 +121,7 @@ def postback_welcome(user):  # Template hiện ra lúc chào đón
     }
     out(payload)
 
-    # Gửi tin nhắn văn bản chào mừng
-    text = (
-        "🎉 Chào mừng sự trở lại của Chatbot Hẹn Hò! 🎉\n\n"
-        "Sau một thời gian vắng bóng, chatbot hẹn hò của CDA đã chính thức quay trở lại và mạnh mẽ hơn bao giờ hết! 🚀 "
-        "Với những nâng cấp đáng chú ý, chatbot hẹn hò giờ đây không chỉ giúp bạn tìm được những cuộc trò chuyện thú vị mà còn mang lại những kết nối thực sự, gần gũi và cá nhân hóa hơn.\n\n"
-        "✨ Tại sao bạn nên thử sử dụng chatbot hẹn hò của CDA:\n"
-        "💬 Tìm kiếm bạn đồng hành: Chatbot giúp bạn khám phá những hồ sơ phù hợp với sở thích và yêu cầu của bạn.\n"
-        "💡 Gợi ý những câu hỏi hẹn hò: Chatbot cung cấp những câu hỏi thú vị để bạn dễ dàng tạo ra một cuộc trò chuyện lôi cuốn.\n"
-        "📅 Trò chuyện tự động và nhanh chóng: Bạn có thể trò chuyện với chatbot để làm quen và tìm hiểu, hoặc đơn giản là giải trí.\n"
-        "💬 Hỗ trợ 24/7: Dù bạn ở đâu, vào lúc nào, chatbot luôn sẵn sàng trợ giúp.\n"
-        "🔒 Tính năng bảo mật và riêng tư: Mọi thông tin cá nhân của bạn sẽ được bảo vệ an toàn.\n\n"
-        "🎉 Trải nghiệm ngay và tìm kiếm tình yêu! Đừng ngần ngại trò chuyện với chatbot của chúng mình để bắt đầu hành trình tìm kiếm một nửa yêu thương!\n\n"
-        "👉 Để bắt đầu, hãy ấn nút 'BẮT ĐẦU' ngay nhé!"
-    )
 
-    payload_text = {
-        "recipient": {"id": user.id},
-        "message": {"text": text}
-    }
-    out(payload_text)
 
 
 
@@ -118,7 +130,9 @@ def postback_welcome(user):  # Template hiện ra lúc chào đón
 def postback_first_come_nickname(user):
     # Kiểm tra nickname
     if not user.introduce or user.introduce == "Chưa có":
-        text = '''Bạn hãy nhập theo cú pháp sau: /nickname <nickname_của_bạn>
+        text = ''' 💡Bạn hãy nhập theo cú pháp sau:
+👉 /nickname <nickname_của_bạn>
+✨ Ví dụ: /nickname mai khanhh
         '''
         payload = {
             "recipient": {"id": user.id},
@@ -129,10 +143,13 @@ def postback_first_come_nickname(user):
     return True  #  giới thiệu đã hợp lệ
 
 def postback_first_come(user):
-    text = f'''Nickname hiện tại:
-Giới thiệu hiện tại:
-Nen viec dau tien cua ban se la dien nickname
-'''
+    text = (
+        "💡 *Thông tin hiện tại của bạn:*\n"
+        "• Nickname: (chưa có)\n"
+        "• Giới thiệu: (chưa có)\n\n"
+        "👉 Để bắt đầu, hãy ấn nút ở phía dưới để điền đầy đủ thông tin cần thiết\n"
+    )
+
     payload = {
         "recipient": {"id": user.id},
         "message": {
@@ -157,14 +174,10 @@ Nen viec dau tien cua ban se la dien nickname
 
 def postback_remind_nickname(user):
     if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
-        text = '''Bạn chưa nhập đủ thông tin cần thiết.
-Vui lòng nhập:
-/nickname để đổi biệt danh
-Ví dụ: /nickname mai_khanhh
-
-/gioithieu để giới thiệu ngắn về mình
-Ví dụ:
-/gioithieu cần người gấp màn hộ, nhiều muỗi mà bung màn ra không bít gấp 🥺
+        text = '''Tiếp tới, bạn hãy điền phần giới thiệu. Vui lòng nhập thông tin trước khi tiếp tục.
++ Câu lệnh: /gioithieu <giới_thiệu_bản_thân>
+       VD : /gioithieu Tôi là thành viên CLB CDA Gen 17
+            /gioithieu cần người gấp màn hộ, nhiều muỗi mà bung màn ra không bít gấp 🥺
 '''
         payload = {
             "recipient": {"id": user.id},
@@ -215,8 +228,9 @@ Ví dụ:
 def postback_setting(user):
     if user.nickname.startswith("#CDA") or user.introduce == "Chưa có" or user.nickname == "" or user.introduce == "":
         text = '''Tiếp tới, bạn hãy điền phần giới thiệu. Vui lòng nhập thông tin trước khi tiếp tục.
-Câu lệnh:
-/gioithieu <giới_thiệu_bản_thân>
+Câu lệnh: /gioithieu <giới_thiệu_bản_thân>
+VD : /gioithieu Tôi là thành viên CLB CDA Gen 17
+
 '''
         payload = {
             "recipient": {"id": user.id},
@@ -254,11 +268,13 @@ Câu lệnh:
             case 'BI':
                 partner = 'Nhạc nào cũng nhảy'
 
-        text = f'''Nickname của bạn: {user.nickname}
-Giới tính bạn chọn: {gender}
-Gu bạn chọn: {partner}
-Giới thiệu ngắn gọn: '{user.introduce}'
-Bạn có muốn thay đổi hay tìm kiếm luôn?
+        text = f'''🤖 *Thông tin hiện tại của bạn:*  
+- 🏷️ *Nickname:* {user.nickname}  
+- 👤 *Giới tính bạn chọn:* {gender}  
+- ❤️ *Gu bạn chọn:* {partner}  
+- ✍️ *Giới thiệu ngắn gọn:* "{user.introduce}"  
+
+👉 Bạn có muốn thay đổi thông tin hay bắt đầu tìm kiếm ngay? 🎯  
         '''
         payload = {
             "recipient": {"id": user.id},
@@ -350,7 +366,7 @@ def postback_search(user): #Thông báo bắt đầu tìm kiếm
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text": "BOTBOT đang tìm kiếm...\nĐợi chút nhé",
+                    "text": " 🤖BOTBOT đang tìm kiếm...\nĐợi chút nhé",
                     "buttons": [
                         {
                             "type": "postback",
@@ -372,20 +388,31 @@ def postback_found(user, partner, wait_time):
 
     #dk
     if wait_seconds < 60:
-        text_user = f'''BOTBOT đã tìm thấy!
-Bạn đã được mai mối với: {partner.nickname}
-1 xíu về họ: {partner.introduce}
+        text_user = f'''🎉 BOTBOT đã tìm thấy! 
+💌 Bạn đã được mai mối với: *{partner.nickname}*  
+📖 Một chút về họ: *{partner.introduce}*  
 
-{partner.nickname} chỉ mới chờ {wait_time}, duyên số tìm đến 2 bạn trước khi Cupid kịp giương cung rồi đó!
-Hãy cùng bắt đầu cuộc trò chuyện ngay nào!
+⏳ {partner.nickname} chỉ mới chờ *{wait_time}*, duyên số đã tìm đến hai bạn trước khi Cupid kịp giương cung! 
+✨ Hai bạn có thể *nhắn tin*, *gửi ảnh*, *video*, và *voice* cho nhau.  
+
+👉 *Hãy cùng bắt đầu cuộc trò chuyện ngay nào!* 
         '''
     else:
-        text_user = f'''BOTBOT đã tìm thấy!
-Bạn đã được mai mối với: {partner.nickname}
-1 xíu về họ: {partner.introduce}
+        text_user = f'''🤖 BOTBOT đã tìm thấy!  
+Bạn đã được mai mối với: *{partner.nickname}*  
+📖 Một chút về họ: *{partner.introduce}*  
 
-{partner.nickname} đã đợi bạn {wait_time} nên có thể họ đang chưa để ý tin nhắn. Gặp nhau là duyên số, hãy kiên nhẫn chút nhé!
-Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có thể /end và tìm lại.
+⏳ {partner.nickname} đã đợi bạn *{wait_time}*, có thể họ chưa để ý tin nhắn ngay.  
+✨ Gặp nhau là duyên số, hãy kiên nhẫn một chút nhé!  
+
+Hai bạn có thể:  
+- Nhắn tin  
+- Gửi ảnh  
+- Gửi video  
+- Gửi voice  
+
+👉 Nếu thấy {partner.nickname} quá lâu không phản hồi, bạn có thể gõ */end* để kết thúc và tìm kiếm người khác.  
+Chúc bạn trò chuyện thật vui vẻ!
         '''
 
     # Send the message to the user
@@ -407,6 +434,11 @@ Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có th�
                             "type": "postback",
                             "title": "GỢI Ý MỞ LỜI",
                             "payload": "SUGGEST"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "CHƠI TRÒ CHƠI",
+                            "payload": "GAME"
                         }
                     ]
                 }
@@ -420,8 +452,8 @@ Nếu thấy {partner.nickname} quá lâu không phản hồi thì bạn có th�
 Sau {wait_time}, chúng tôi đã tìm được người phù hợp cho bạn, hehe
 
 Bạn đã được mai mối với: {user.nickname}
-1 xíu về họ: {user.introduce}
-
+1 xíu về họ: {user.introduce}\n
+Hai bạn có thể gửi ảnh, video và voice cho nhau.\n
 Chúc bạn ngon miệng!
 '''
     payload = {
@@ -437,6 +469,11 @@ Chúc bạn ngon miệng!
                             "type": "postback",
                             "title": "GỢI Ý MỞ LỜI",
                             "payload": "SUGGEST"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "CHƠI TRÒ CHƠI",
+                            "payload": "GAME"
                         }
                     ]
                 }
@@ -566,17 +603,32 @@ def postback_end(user):
 def postback_guide(user):
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": '''Đơn giản thôi không có gì khó khăn với bạn đâu
-1. Đầu tiên, bạn hãy lựa chọn giới tính của bản thân (giới tính mà tâm hồn bạn đang mang)
-2. Tiếp theo, bạn hãy chọn gu giới tính người bạn muốn làm quen
-3. Sau đó, bạn ấn tìm kiếm để chúng tôi có thể giúp bạn gặp được người phù hợp với mong muốn của bạn
-4. Nếu bạn muốn đổi nickname hoặc giới thiệu bản thân thì hãy dùng:
-/nickname hoặc /gioithieu  nhé !
-5. Nếu không biết phải mở lời với đối phương như nào hay trong tình trạng hết văn thì hãy ấn vào "Gợi ý mở lời", chúng tôi sẽ giúp đỡ bạn một phần nào đấy để các bạn có thể dễ dàng tiếp cận nhau hơn :3
-6. Nếu cảm thấy đối phương không phù hợp với bản thân và muốn kết thúc cuộc trò chuyện thì hãy gõ /end hoặc ấn cái nút ❌KẾT THÚC ở MENU  để  kết thúc câu chuyện với người đó và có thể tiếp tục tìm kiếm những người phù hợp với mong muốn  của bạn
-
-Hãy gõ /lenh để hiển thị tất cả những câu lệnh bạn có thể sử dụng
-'''},
+        "message": {
+            "text": (
+                "🌟 *Hướng dẫn sử dụng Chatbot Hẹn Hò CDA* 🌟\n\n"
+                "💡 *1. Nhập thông tin cá nhân:*\n"
+                "- ✏️ Nhập nickname: `/nickname <nickname_của_bạn>`\n"
+                "- 🖋️ Nhập giới thiệu bản thân: `/gioithieu <giới_thiệu_ngắn_gọn>`\n"
+                "- 👤 Chọn giới tính: Nam, Nữ hoặc Bí mật.\n"
+                "- 🎯 Chọn gu giới tính bạn muốn làm quen: Nam, Nữ hoặc 'Nhạc nào cũng nhảy'.\n\n"
+                "🔍 *2. Bắt đầu tìm kiếm:*\n"
+                "- Sau khi nhập đủ thông tin, nhấn nút 'Tìm kiếm' để kết nối với một người phù hợp! 🥰\n\n"
+                "⚙️ *3. Tùy chỉnh thông tin cá nhân:*\n"
+                "- 🔄 Đổi nickname: `/nickname <nickname_mới>`\n"
+                "- 🔄 Đổi giới thiệu: `/gioithieu <giới_thiệu_mới>`\n"
+                "- 🔄 Thay đổi gu hoặc giới tính bằng cách chọn lại trong 'Đổi thông tin'.\n\n"
+                "💬 *4. Gợi ý mở lời:*\n"
+                "- 🗨️ Nhấn 'Gợi ý mở lời' khi không biết cách bắt đầu. Chúng tôi sẽ cung cấp ý tưởng thú vị! 😄\n\n"
+                "❌ *5. Kết thúc trò chuyện:*\n"
+                "- Nếu không thấy phù hợp, gõ /end hoặc nhấn 'Kết thúc' để tìm kiếm người khác. 🛑\n\n"
+                "🔒 *6. Lưu ý & bảo mật:*\n"
+                "- 🔐 Khi đang tìm kiếm, bạn sẽ không thể nhấn 'Bắt đầu' lại.\n"
+                "- 🔇 Do chưa được sự cấp phép của Facebook, cuộc trò chuyện sẽ chỉ có chức năng gửi tin nhắn, hình ảnh, video và voice.\n"
+                "- 🔏 Mọi thông tin cá nhân sẽ được bảo vệ tuyệt đối.\n\n"
+                "👉 *Gõ lệnh /lenh để xem danh sách đầy đủ các lệnh.*\n\n"
+                "💖 *Chúc bạn tìm được những kết nối thú vị và ý nghĩa!* 💖"
+            )
+        },
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -602,14 +654,13 @@ def postback_introduction(user):
     }
     out(payload)
 
-
-def initiate_reply(user, message_id):
-    """Yêu cầu người dùng nhập nội dung phản hồi."""
-    user.temp_message_id = message_id  # Lưu ID tin nhắn tạm thời
-    update_temp_message_id(user.id, message_id)  # Lưu vào database (nếu cần)
-    send_message(user.id, "Vui lòng nhập nội dung phản hồi của bạn:")
-
-
+def postback_game(user):
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {"text": "Hiện tại, tính năng này đang trong quá trình hoàn thiện.\nThử lại sau 3/2 nhó.😊"},
+        "messaging_type": "RESPONSE"
+    }
+    out(payload)
 
 def postback_view_queue(user): #Xem hàng đợi, toàn là code SQL, nên để anh viết
     print("Wait list after global ", wait_list)
@@ -632,7 +683,6 @@ def postback_view_queue(user): #Xem hàng đợi, toàn là code SQL, nên để
     for x in wait_list:
         if (check_match(user, x)) and (user.id != x.id) :
             count_suit += 1
-    count_suit += 3
     payload = {
         "recipient": {"id": user.id},
         "message": {"text": f'''Hiện đang có:
@@ -647,12 +697,7 @@ def postback_view_queue(user): #Xem hàng đợi, toàn là code SQL, nên để
     out(payload)
 
 def postback_change_info(user): #Nằm ở menu khi người dùng muốn đổi nickname hoặc giới thiệu bản thân
-    #gõ /nickname để đổi biệt danh
-    # /gioithieu để đổi giới thiệu về bạn
-    # /gioitinh Nam, Nu, Bi để đổi giới tính
-    # /gu Nam, Nu, Bi để đổi gu:
-    payload= {}
-    out(payload)
+    postback_remind_nickname(user)
 
 #def postback_suggest(user): #Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
 #    payload = {
@@ -733,7 +778,10 @@ def postback_suggest_boy(user):
 def postback_suggest_boy1(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nBạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ? Nếu không thì cho mình thử nhé 😎✨\n đã được gửi cho định mệnh của bạn"},
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Bạn ơi, bộ luật mới có quy định nào cấm làm quen với người dễ thương không nhỉ? "
+                            "Nếu không thì cho mình thử nhé 😎✨'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Chúc bạn may mắn! 🎉"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -747,7 +795,10 @@ def postback_suggest_boy1(user):  # Hiện ra khi người dùng muốn gợi ý
 def postback_suggest_boy2(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nCậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian không? Vậy nên đền bù cho tớ bằng cách trò chuyện hôm nay đi! 😏🕒\n đã được gửi cho định mệnh của bạn"},
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Cậu có biết là để nghĩ cách bắt chuyện với cậu tớ mất bao nhiêu thời gian không? "
+                            "Vậy nên đền bù cho tớ bằng cách trò chuyện hôm nay đi! 😏🕒'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Chúc bạn thành công! 💬"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -761,7 +812,10 @@ def postback_suggest_boy2(user):  # Hiện ra khi người dùng muốn gợi ý
 def postback_suggest_boy3(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nMình đang làm khảo sát: Bạn thích uống trà sữa với đường hay với mình hơn? Đừng chọn sai nhé 😉🧋\n đã được gửi cho định mệnh của bạn"},
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Mình đang làm khảo sát: Bạn thích uống trà sữa với đường hay với mình hơn? "
+                            "Đừng chọn sai nhé 😉🧋'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Hy vọng bạn có một khởi đầu tuyệt vời! 🍹"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -816,7 +870,9 @@ def postback_suggest_girl(user):
 def postback_suggest_girl1(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nTrời lạnh như này, mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong? 🧥❄️\n đã được gửi cho định mệnh của bạn"},
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Trời lạnh như này, mình hỏi nhỏ, cậu có cần ai nhắc mặc ấm hong? 🧥❄️'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Chúc bạn thành công! 🔥"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -826,10 +882,14 @@ def postback_suggest_girl1(user):  # Hiện ra khi người dùng muốn gợi �
         "messaging_type": "RESPONSE"
     }
     out(payload)
+
 def postback_suggest_girl2(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nNay xem tarot, người ta bảo tớ nhắn tin với định mệnh. Tự nhiên tớ lại nhắn với cậu, cậu thấy có hợp lý không? 🔮😌\n đã được gửi cho định mệnh của bạn"},
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Nay xem tarot, người ta bảo tớ nhắn tin với định mệnh. "
+                            "Tự nhiên tớ lại nhắn với cậu, cậu thấy có hợp lý không? 🔮😌'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Chúc bạn may mắn! ✨"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -839,10 +899,14 @@ def postback_suggest_girl2(user):  # Hiện ra khi người dùng muốn gợi �
         "messaging_type": "RESPONSE"
     }
     out(payload)
+
 def postback_suggest_girl3(user):  # Hiện ra khi người dùng muốn gợi ý văn để bắt chuyện
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "🤖 Tin nhắn \nCậu thích kiểu người nói chuyện thú vị hay đáng yêu hơn? Vì mình giỏi cả hai nên hơi phân vân! 😊💬\n đã được gửi cho định mệnh của bạn" },
+        "message": {"text": "🤖 Tin nhắn của bạn: \n\n"
+                            "👉 'Cậu thích kiểu người nói chuyện thú vị hay đáng yêu hơn? "
+                            "Vì mình giỏi cả hai nên hơi phân vân! 😊💬'\n\n"
+                            "✔️ Đã được gửi tới người ghép nối với bạn. Hy vọng cuộc trò chuyện thú vị sẽ bắt đầu! 💬"},
         "messaging_type": "RESPONSE"
     }
     out(payload)
@@ -903,10 +967,13 @@ def postback_retry(user):
     if missing_info:
         # Hiển thị thông tin còn thiếu
         missing_text = " và ".join(missing_info)
-        text = f'''Bạn chưa hoàn thiện thông tin. Bạn còn thiếu {missing_text}.
-Vui lòng nhập:
-- /nickname để đổi biệt danh
-- /gioithieu để giới thiệu ngắn về mình
+        text = f'''⚠️ Bạn chưa hoàn thiện thông tin. Bạn còn thiếu *{missing_text}*.
+📌 Vui lòng nhập thông tin để tiếp tục:
+
+💬 Câu lệnh: /gioithieu giới thiệu ngắn về mình
+✨ Ví dụ: `/gioithieu Mình là fan MU 20 năm 🚀`
+
+👉 Hãy hoàn thiện thông tin và bắt đầu kết nối ngay nhé! 💖
 '''
         payload = {
             "recipient": {"id": user.id},
