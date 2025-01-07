@@ -271,18 +271,18 @@ VD : /gioithieu Tôi là thành viên CLB CDA Gen 17
         gender, partner = 'A', 'B'
         match user.gender:
             case 'MALE':
-                gender = 'Nam'
+                gender = '👱‍♂️ Nam'
             case 'FEMALE':
-                gender = 'Nữ'
+                gender = '👱‍♀️ Nữ'
             case 'BI':
-                gender = 'Bí mật'
+                gender = '🏳️‍🌈 Bisexual'
         match user.partner_gender:
             case 'MALE':
-                partner = 'Nam'
+                partner = '👱‍♂️ Nam'
             case 'FEMALE':
-                partner = 'Nữ'
+                partner = '👱‍♀️ Nữ'
             case 'BI':
-                partner = 'Nhạc nào cũng nhảy'
+                partner = '🏳️‍🌈 Bisexual'
 
         text = f'''🤖 *Thông tin hiện tại của bạn:*  
 - 🏷️ *Nickname:* {user.nickname}  

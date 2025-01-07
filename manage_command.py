@@ -28,6 +28,8 @@ def process_command(user, command, message):
     """
     Kiểm tra trạng thái của người dùng và trả về phản hồi tương ứng với lệnh.
     """
+    if user.state == "SEARCH": 
+        return "🤖 Bạn đang tìm kiếm, hãy ấn *Dừng tìm kiếm* để tiếp tục hành động trên"
     if command == "fix":
         user.state = 'WELCOME'
         update_state(user.id, user.state)

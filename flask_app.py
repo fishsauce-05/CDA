@@ -88,7 +88,8 @@ def webhook():
                                         if response:
                                             send_message(sender_id, response)
                                             if message_text.startswith("/nickname") or message_text.startswith("/gioithieu"):
-                                                postback_retry(user) #Gửi thông báo đã đổi biệt danh/giới thiệu trước khi tìm kiếm
+                                                if user.state != 'SEARCH':
+                                                    postback_retry(user) #Gửi thông báo đã đổi biệt danh/giới thiệu trước khi tìm kiếm
                                     else:
                                         if user.state == 'TALK':
                                             send_message(user.partner_id, message_text)
@@ -99,7 +100,6 @@ def webhook():
                                         else:
                                             send_message(sender_id, "🤖 Dường như bạn đang chưa rõ cách hoạt động của tụi mình\n Hãy bấm vào nút *Hướng dẫn sử dụng* để hiểu rõ hơn cách tụi mình hoạt động nhé!")
                                            # send_message(sender_id, "CÁI NÀY ĐỂ FIX BUG, KỆ ĐI:\n" + user.state)
-
                         # Xử lý postback
                         if "postback" in message_data:
                             handle_postback(user, message_data["postback"]["payload"], users)

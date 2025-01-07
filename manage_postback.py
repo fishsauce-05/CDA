@@ -30,7 +30,7 @@ def handle_postback(user, payload, users):
             error_message = "🤖 Lỗi lỗi!!!\nVui lòng thử lại"  # Mặc định
             # Kiểm tra nếu trạng thái là SEARCH
             if user.state == "SEARCH":
-                error_message = "🤖 Bạn đang tìm kiếm, hãy ấn dừng tìm kiếm để tiếp tục hành động trên"
+                error_message = "🤖 Bạn đang tìm kiếm, hãy ấn *Dừng tìm kiếm* để tiếp tục hành động trên"
 
             payload = {
                 "recipient": {"id": user.id},
@@ -128,6 +128,7 @@ def return_postback(user, payload, users):
             case '#SEARCH':
                 postback_search(user)
                 user.state = 'SEARCH'
+                payload = "#CDA"
                 update_state(user.id, user.state)
                 partner = control_list(user)
                 if partner != None: #nếu trả về partner hợp lệ
