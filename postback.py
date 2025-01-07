@@ -331,9 +331,9 @@ def postback_setgender(user):
                     "template_type": "button",
                     "text": text,
                     "buttons": [
-                        {"type": "postback", "title": "Nam", "payload": "#ME_MALE"},
-                        {"type": "postback", "title": "Nữ", "payload": "#ME_FEMALE"},
-                        {"type": "postback", "title": "Bí mật", "payload": "#ME_BI"}
+                        {"type": "postback", "title": "👱‍♂️ Nam", "payload": "#ME_MALE"},
+                        {"type": "postback", "title": "👱‍♀️ Nữ", "payload": "#ME_FEMALE"},
+                        {"type": "postback", "title": "🏳️‍🌈 Bisexual", "payload": "#ME_BI"}
                     ]
                 }
             }
@@ -354,17 +354,17 @@ def  postback_partnergender(user): #Hiện ra để người dùng chọn gu c�
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": "Nam",
+                            "title": "👱‍♂️ Nam",
                             "payload": "#YOU_MALE"
                         },
                         {
                             "type": "postback",
-                            "title": "Nữ",
+                            "title": "👱‍♀️ Nữ",
                             "payload": "#YOU_FEMALE"
                         },
                         {
                             "type": "postback",
-                            "title": "Nhạc nào cũng nhảy",
+                            "title": "🏳️‍🌈 Bisexual",
                             "payload": "#YOU_BI"
                         },
                     ]
