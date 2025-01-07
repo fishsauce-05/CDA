@@ -46,7 +46,6 @@ def process_command(user, command, message):
             user.nickname = new_nickname
             update_nickname(user.id, user.nickname)
             return f"Đã đổi nickname thành: {user.nickname}."
-            postback_retry(user)  # Kiểm tra thông tin sau khi đổi nickname
 
     if command == "gioithieu":
         new_introduce = " ".join(message[1:])
@@ -55,7 +54,6 @@ def process_command(user, command, message):
         user.introduce = new_introduce
         update_introduce(user.id, user.introduce)
         return f"Đã đổi giới thiệu thành: {user.introduce}."
-        postback_retry(user)  # Kiểm tra thông tin sau khi đổi giới thiệu
 
     if command.lower() == "end":
         postback_confirm_end(user)
