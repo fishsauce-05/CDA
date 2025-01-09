@@ -28,4 +28,4 @@ sticker_search = "https://scontent.xx.fbcdn.net/v/t39.1997-6/64505140_1552340514
 sticker_found_waiter = "https://scontent.xx.fbcdn.net/v/t39.1997-6/70077147_2417677345144158_8029847784037285888_n.png?stp=dst-png_s100x100&_nc_cat=1&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=LfY-CvpSULoQ7kNvgE_T3xH&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=Ao6QUmC9kdqKGUMYpVU3EQB&oh=00_AYC_kuSrbKWbev96xZvpZEYxYSg1Bm1EjfEczRPiid2aug&oe=67833F6D"
 sticker_found_finder = "https://scontent.xx.fbcdn.net/v/t39.1997-6/17351670_193083034543967_2101981557580365824_n.png?stp=dst-png_s100x100&_nc_cat=105&ccb=1-7&_nc_sid=23dd7b&_nc_ohc=WgcOq42lORkQ7kNvgEyPHpo&_nc_ad=z-m&_nc_cid=0&_nc_zt=26&_nc_ht=scontent.xx&_nc_gid=ANzwJoOvUxF2J4fXXFRv0pK&oh=00_AYBXZLIvV3cxofWTpyGWgv2QUt4uHuFxqjPACQ7XpBK_Bw&oe=67835AC7"
 
-gg_form_url = "https://forms.gle/HxNJnQQ97tqWcfJc9"
+gg_form_url = "https://forms.gle/y6arT68hWyvBVGZU6"
