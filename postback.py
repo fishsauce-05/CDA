@@ -502,8 +502,26 @@ Chúc bạn ngon miệng!
     send_image(user.id, sticker_found_waiter)
 
 
-def postback_feedback(user): #Yêu cầu người dùng feedback về cuộc trò chuyện vừa rồi
-    payload= {}
+def postback_feedback(user):
+    payload = {
+        "recipient": {"id": user.id},
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text":"🤖 Cậu có thể bỏ ra chút thời gian để nói cho mình nghe về trải nghiệm của cậu được khum?\nChúng tớ vẫn chưa thực sự hoàn thiện, nên rất cần những lời góp ý từ phía cậu",
+                    "buttons": [
+                        {
+                            "type": "web_url",
+                            "title": "FEEDBACK",
+                            "url": gg_form_url
+                        },
+                    ]
+                }
+            }
+        }
+    }
     out(payload)
 
 def postback_confirm_end(user): #Hiện ra khi người dùng muốn end, hỏi lại cho chắc là có muốn rời không?
@@ -565,6 +583,8 @@ def postback_end_chat(user): #Khi end chat
         }
     }
     out(payload)
+
+
 def postback_partner_end(partner_id):
     payload = {
         "recipient": {"id": partner_id},
@@ -676,7 +696,7 @@ def postback_introduction(user):
 def postback_game(user):
     payload = {
         "recipient": {"id": user.id},
-        "message": {"text": "Hiện tại, tính năng này đang trong quá trình hoàn thiện.\nThử lại sau 3/2 nhó.😊"},
+        "message": {"text": "Hiện tại, tính năng này đang trong quá trình hoàn thiện.\nBạn có thể trải nghiệm tính năng trên sau ngày 3/2.😊"},
         "messaging_type": "RESPONSE"
     }
     out(payload)

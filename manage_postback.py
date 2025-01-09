@@ -20,7 +20,6 @@ state_postback = { #MU vo dich nhe anh em
 }
 
 
-
 def handle_postback(user, payload, users):
     """Xử lý các hành động postback."""
     if payload.startswith('#'):
@@ -128,7 +127,6 @@ def return_postback(user, payload, users):
             case '#SEARCH':
                 postback_search(user)
                 user.state = 'SEARCH'
-                payload = "#CDA"
                 update_state(user.id, user.state)
                 partner = control_list(user)
                 if partner != None: #nếu trả về partner hợp lệ
@@ -206,8 +204,6 @@ def return_postback(user, payload, users):
                         postback_partner_end(user.partner_id)
                         update_partner_id(user.partner_id, "")
                         update_partner_id(user.id, "")
-                        # postback_feedback(user)
-
                         partner.state = 'END'
                         update_state(partner.id, partner.state)
                     else:
@@ -217,6 +213,7 @@ def return_postback(user, payload, users):
                     postback_end(user)
                 user.state = 'END'
                 update_state(user.id, user.state)
+                postback_feedback(user)
 
             case '#AGAIN':
                 user.state = 'SETTING'
